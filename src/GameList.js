@@ -5,13 +5,13 @@ import {
 } from "react-router-dom";
 
 
-const GameList = ({games}) =>
+const GameList = (probs) =>{
 
-    <ul>
-        {games.map((game, index) =>{
+    {/* <ul>
+        {games.map((game, index) =>{ */}
 
-            return (<div><NavLink to={{pathname:'/gameinfo', gameinfo:`${game.id}`}}>{game.name}</NavLink></div>)
-        })}
-    </ul>;
+            return (<li style={{height:'5rem', fontSize:'1.2rem'}}><NavLink to={{pathname:'/gameinfo', gameinfo:`${probs.id}`}}>{probs.name}</NavLink></li>)
+       {/*  })}
+    </ul>; */}}
 
 export default GameList;
