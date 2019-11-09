@@ -1,11 +1,8 @@
 
 import React, { Component } from "react";
 import Genre from "./Genre"
-import {
-    Route,
-    NavLink,
-    HashRouter
-  } from "react-router-dom";
+import Box from '@material-ui/core/Box';
+import {NavLink} from "react-router-dom";
 
 export class GenreSelect extends Component {
   state ={  genres:[],
@@ -25,12 +22,16 @@ export class GenreSelect extends Component {
   return (
     
     <div>
-    <div><NavLink to="/">home</NavLink></div>
-    <NavLink to="/">back</NavLink>
-     
-    <div>{this.state.genres.map((genre)=>{
-      return (<NavLink to={{pathname:'/games', genre:{slug: `${genre.slug}`}}}><Genre key={genre.id} genre={genre}></Genre></NavLink>)
-      })}</div>
+    
+    <Box display="flex"  flexDirection="row" p={1} m={2} flexWrap="wrap" alignContent="flex-end" justifyContent="center">
+    {this.state.genres.map((genre,index)=>{
+      return (<NavLink key={index} style={{textDecoration:'none'}} to={{pathname:'/games', genre:{slug: `${genre.slug}`}}}><Genre key={genre.id} start={index} genre={genre}></Genre></NavLink>)
+      })}</Box>
+
+      
+
+
+
     </div>
   )
 }}

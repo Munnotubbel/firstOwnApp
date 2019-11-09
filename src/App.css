@@ -1,11 +1,71 @@
-.element {
-  height: 200px;
-  width: 200px;
-  margin: 0 auto;
+@import url('https://fonts.googleapis.com/css?family=Montserrat:900&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Work+Sans:300&display=swap');
+
+.gamecards {width: 95%;}
+
+.dotred, .dotblue, .dotyellow, .dotgreen {
+  min-height: 5px;
+  max-height: 25px;
+  height: 1.5vh;
+  min-width: 5px;
+  max-width: 25px;
+width: 1.5vh;  
+  border-radius: 50%;
+  display: inline-block;
+}
+.dotred{background-color: red;}
+.dotblue{background-color: blue;}
+.dotyellow{background-color: yellow;}
+.dotgreen{background-color: green;}
+
+.gameTitle {font-size: 3vw;}
+
+.ratingtext {font-size: 2.5vw; display: inline-block;margin-left: 2px;margin-right: 2px;}
+
+
+.headlines {font-family: 'Montserrat', sans-serif;
+            text-decoration: none;
+          color: black}
+
+.headlinesBackground {background-color:rgba(247, 247, 247, 0.7)}
+
+
+.bodyhanspeter{background: #43C6AC;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to top, #43C6AC ,#191654);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to top, #43C6AC, #191654); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  }
+
+.genretext {position: absolute;
+  width: 100%;
   
+            margin-top: 40%}
+  .backImages {   background-size: 70% auto;
+    background-position: center;
+    background-repeat: no-repeat;
+    }
+  .pulseTitle {
+    text-overflow: ellipsis;
+    
+    font-size: 3vw;
+ 
+    color: black;
+    background-color:rgba(247, 247, 247, 0.7);
+    /* text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; */
+    text-align: center;
+       
+}
+
+
+.element {
+  
+  height: 18vw;
+  min-height: 100px;
+  width: 18vw;
+  min-width: 100px;
+  margin: 15px;
   
   animation-name: stretch;
-  animation-duration: 1.5s; 
+  animation-duration: 2s; 
   animation-timing-function: ease-out; 
   animation-delay: 0;
   animation-direction: alternate;
@@ -14,28 +74,24 @@
   animation-play-state: running;
 }
 
+
 @keyframes stretch {
   0% {
-    transform: scale(.9);
-    background-color: white;
+    transform: scale(1.1);
+    background-color: rgba(255, 255, 255, 0);
     border-radius: 100%;
   }
   50% {
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.486);
   }
   100% {
-    transform: scale(1.1);
-    background-color:rgb(219, 219, 219);
+    transform: scale(0.9);
+    background-color: white;
   }
 }
 
 body,
 html {
-  height: 100%;
-}
-
-body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-family: 'Work Sans', sans-serif;
+  
 }

@@ -7,6 +7,6 @@ import {
    
   } from "react-router-dom";
 
-const GoHome =({}) => <Button align="left" variant="contained" ><NavLink to="/" style={{textDecoration: 'none',}}    >home</NavLink></Button>;
+const GoHome=()=> <Button align="left" variant="contained" ><NavLink to="/" style={{textDecoration: 'none',}}>home</NavLink></Button>;
 
 export default withRouter(GoHome);

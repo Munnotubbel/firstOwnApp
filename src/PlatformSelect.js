@@ -4,11 +4,7 @@ import Platform from "./Platform"
 import {NavLink} from "react-router-dom";
 import Box from '@material-ui/core/Box';
 import { createStyles, withStyles } from '@material-ui/core/styles';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import Grid from '@material-ui/core/Grid';
+
 
 
 
@@ -54,7 +50,7 @@ const styles = createStyles(theme => ({
     },
   
     {id:5,
-      name:"Apple Macintosh",
+      name:"Apple Mac",
       url: "https://res.cloudinary.com/munnotubbel/image/upload/v1573056923/gamerspilot/apple_qdo0bs.png"      
     },
   
@@ -102,16 +98,43 @@ const styles = createStyles(theme => ({
 
 
 
+  _handleClick() {
+    var num = Math.floor((Math.random() * 10) + 1);
+    this.setState({
+      active: num
+    });
+  }
+
+  _handleWheel(e) {
+    const delta = Math.abs(e.deltaY) === 125 ? e.deltaY * -120 : e.deltaY < 0 ? -600000 : 600000;
+    const count = Math.ceil(Math.abs(delta) / 120);
+
+    if (count > 0) {
+      const sign = Math.abs(delta) / delta;
+      let func = null;
+
+      if (sign > 0 && this._hasPrevFigure()) {
+        e.preventDefault();
+        func = this._handlePrevFigure();
+      } else if (sign < 0 && this._hasNextFigure()) {
+        e.preventDefault();
+        func = this._handleNextFigure();
+      }
+
+      if (typeof func === 'function') {
+        for (let i = 0; i < count; i++) func();
+      }
+    }
+  }
+
 
    render() {
-    
-const {classes} = this.props
-
+document.body.style.backgroundColor = "lightblue";
   return (
-    <div style={{ width: '95%' }}>>
+    <div>
 
-    <Box display="flex" flexDirection="row" p={1} m={1}>{this.state.platforms.map(platform => (<NavLink to={{pathname:'/genres', platform:{id: `${platform.id}`}}}>
-            <Platform platform={platform}></Platform></NavLink>))} </Box>
+    <Box display="flex"  flexDirection="row" flexWrap="wrap" alignContent="flex-end" justifyContent="center">{this.state.platforms.map((platform,index) => (<NavLink key={index} style={{textDecoration:"none"}} to={{pathname:'/genres', platform:{id: `${platform.id}`}}}>
+            <Platform start={index}  platform={platform}></Platform></NavLink>))} </Box>
     
 {/*     <div className={classes.root}>    
       <GridList container
@@ -128,6 +151,49 @@ const {classes} = this.props
 {/* <GridListTileBar align="center"
             title={platform.name}                
           /> */}
+
+      {/*     <div>
+          <StyleRoot>
+        <Coverflow
+          width={960}
+          height={480}
+          displayQuantityOfSide={2}
+          navigation={true}
+          infiniteScroll={true}
+          enableHeading={false}
+          active={this.state.active}
+          media={{
+        '@media (max-width: 900px)': {
+          width: '600px',
+          height: '300px'
+        },
+        '@media (min-width: 900px)': {
+          width: '960px',
+          height: '600px'
+        }
+      }}
+        >
+          <div
+            onClick={() => fn()}
+            onKeyDown={() => fn()}
+            onWheel={()=> this._handleWheel()}
+            role="menuitem"
+            tabIndex="0"
+          >
+         
+          </div>
+         {this.state.platforms.map(platform => (<NavLink to={{pathname:'/genres', platform:{id: `${platform.id}`}}}>
+            <Platform platform={platform}></Platform></NavLink>))}
+        </Coverflow>
+        </StyleRoot>
+      </div>
+    );
+  }
+
+};
+ */}
+
+
 
 
   </div>

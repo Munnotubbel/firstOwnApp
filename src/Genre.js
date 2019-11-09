@@ -1,13 +1,23 @@
 import React from 'react'
+import "./App.css"
+import Box from '@material-ui/core/Box';
 
-
-const Genre = ({genre}) =>{
+const Genre = ({genre,start}) =>{
     
-/* const backgroundSrc={genre.image_background}; */
-return(
-    <div style={{color:'white',width:'200px',height:'200px',backgroundImage: `url(${genre.image_background})`, backgroundSize: '200px 200px', margin:'10px'}}><p>{genre.name}</p></div>
-)
+const bildurl=genre.image_background;
 
-}
+
+return(
+    <Box  className="element" style={{backgroundImage: `url(${bildurl}`,
+       backgroundSize: 'cover',
+       backgroundPosition: 'center',
+       backgroundRepeat: 'no-repeat',
+       animationDelay:`0.${start}s`,
+       border:'0px solid #000000'}}>
+      <Box className="pulseTitle genretext headlines" style={{border: '0px solid black',borderRadius: '5px' }}>{genre.name}</Box>
+    
+</Box>
+
+ )}
 
 export default Genre

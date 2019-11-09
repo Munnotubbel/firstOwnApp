@@ -1,38 +1,19 @@
 import React from 'react'
-import Grid from '@material-ui/core/Grid';
+
 import "./App.css"
+import Box from '@material-ui/core/Box';
 
+const Platform = ({platform,start}) =>{
+  const bildurl=platform.url;
 
-const Platform = ({platform}) =>{
-    const bildurl=platform.url
-   
 
 return(
-    <div class="element">
-    <Grid 
-    container
-  direction="row"
-  justify="center"
-  alignItems="flex-end"
-  style={{
-    width:'200px',
-     height:'200px',
+    <Box className="element backImages" style={{backgroundImage: `url(${bildurl}`,
+    animationDelay:`0.${start}s`,
+       }}>
+      <Box className="pulseTitle headlines"  style={{backgroundColor:'rgba(255, 255, 255, 0)'}}>{platform.name}</Box>
     
-      backgroundImage: `url(${bildurl}`,
-       backgroundSize: '130px auto',
-       backgroundPosition: 'center',
-       backgroundRepeat: 'no-repeat',
-        display:'block',
-         borderRadius:'100px',
-         borderColor: '#000000',
-          WebkitBorderRadius:'100px',
-          MozBorderRadius:'100px',}}>
-
-
-
-          <Grid align="center">{platform.name}</Grid>
-          </Grid>
-</div>
+</Box>
 
  )}
 

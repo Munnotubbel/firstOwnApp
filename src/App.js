@@ -4,13 +4,14 @@ import GameInfo from "./GameInfo";
 import GoBack from "./GoBack";
 import GoHome from "./GoHome";
 
+
 import Grid from '@material-ui/core/Grid';
 
 import GenreSelect from "./GenreSelect";
 import GameOverview from "./GameOverview";
 import {
   Route,
-  NavLink,
+ 
   HashRouter
 } from "react-router-dom";
 import Button from '@material-ui/core/Button';
@@ -22,10 +23,11 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
-import Box from '@material-ui/core/Box';
-import Container from '@material-ui/core/Container';
-import { makeStyles } from '@material-ui/core/styles';
+
 import { createStyles, withStyles } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+
 
 
 const styles = createStyles(theme => ({
@@ -35,6 +37,7 @@ const styles = createStyles(theme => ({
   input: {
     display: 'none',
   },
+  
 }));
 
 function ElevationScroll(props) {
@@ -59,7 +62,8 @@ class App extends Component {
 
   state ={platform:"",
           genre:"",
-          gameid:""
+          gameid:"",
+          gamename:""
         };
 
 
@@ -73,8 +77,7 @@ class App extends Component {
        }
 
   platformPicked = (props) => {
-    console.log(props)
-    if (props.location.platform){
+     if (props.location.platform){
     console.log("Your picked Platform is:")
     console.log(props.location.platform)
      this.state.platform=props.location.platform}
@@ -86,8 +89,7 @@ class App extends Component {
 
    
  genrePicked = (props) => {
-  console.log(props)
-  if (props.location.genre){
+   if (props.location.genre){
     console.log("Your picked Genre is:")
     console.log(props.location.genre)
     this.state.genre=props.location.genre}    
@@ -97,55 +99,75 @@ class App extends Component {
   }
   
   gamePicked = (props) => {
-    console.log(props)
-    if (props.location.gameinfo){
+     if (props.location.gameinfo){
       console.log("Your picked Game ID is:")
       console.log(props.location.gameinfo)
-      this.state.gameid=props.location.gameinfo}
+      console.log(props.location.gamename)
+      this.state.gameid=props.location.gameinfo
+      this.state.gamename=props.location.gamename
+    }
       
       return (
         <GameInfo gameid={this.state.gameid}/>        
       );
     }
-  render() {
+
+    render() {
     const {classes} = this.props
+
+ 
+  
   return (
-
-
-<div>
+    
+<React.Fragment>
+<AppBar position="static">
+    <Toolbar>
+      <IconButton edge="start"  color="inherit" aria-label="menu">
+        <MenuIcon />
+      </IconButton>
+      <Typography variant="h6" >
+        News
+      </Typography>
+      <Button color="inherit">Login</Button>
+    </Toolbar>
+  </AppBar>
   
   <HashRouter>
-  <React.Fragment>
+  
+   <React.Fragment>
       <CssBaseline />
-      <ElevationScroll {...this.props}>
+     <ElevationScroll {...this.props}>
         <AppBar>
           <Toolbar> 
           <Grid container
-  direction="row"
+
   justify="space-between"
-  alignItems="center" container spacing={3}>           
-            <GoHome item xs/>
-            <Typography item xs={8} variant="h5">Games Pilot</Typography>
-            <GoBack item xs/>
+  container spacing={3}>           
+            <GoHome />
+            <Typography variant="h5">Gamer's Pilot</Typography>
+            <GoBack/>
             </Grid>
            </Toolbar>
         </AppBar>
-      </ElevationScroll>
-      <Toolbar />
-      <Container>
-        <Box my={2}>
-          
-        </Box>
-      </Container>
-    </React.Fragment>
-    
-    
+      </ElevationScroll> 
+    <Toolbar /> 
    
-    <div><Route exact path="/" component={PlatformSelect}/></div>
-    <div><Route path="/genres" component={this.platformPicked}/></div>
-    <div><Route path="/games" component={this.genrePicked}/></div>
-    <div><Route path="/gameinfo" component={this.gamePicked}/></div>
-    </HashRouter></div>
+    </React.Fragment>
+   
+
+
+
+    
+    <Grid container>
+
+   
+  <Route exact path="/" component={PlatformSelect}/>
+  <Route path="/genres" component={this.platformPicked}/>
+   <Route path="/games" component={this.genrePicked}/>
+   <Route path="/gameinfo" component={this.gamePicked}/>
+   </Grid>
+    </HashRouter>
+    </React.Fragment>
   )
 }}
 
