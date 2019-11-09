@@ -3,6 +3,7 @@
 
 .gamecards {width: 95%;}
 
+.filterButtons {background-color: black;color:white}
 .dotred, .dotblue, .dotyellow, .dotgreen {
   min-height: 5px;
   max-height: 25px;
@@ -20,7 +21,7 @@ width: 1.5vh;
 
 .gameTitle {font-size: 3vw;}
 
-.ratingtext {font-size: 2.5vw; display: inline-block;margin-left: 2px;margin-right: 2px;}
+.ratingtext {font-size:calc(5px + 0.6vw); display: inline-block;margin-left: 2px;margin-right: 2px;}
 
 
 .headlines {font-family: 'Montserrat', sans-serif;

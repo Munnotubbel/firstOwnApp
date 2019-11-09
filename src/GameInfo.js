@@ -5,7 +5,7 @@ import Hidden from '@material-ui/core/Hidden';
 // import { Player } from 'video-react';
 import PropTypes from 'prop-types';
 import withWidth from '@material-ui/core/withWidth';
-import ResponsivePlayer from "./ResponsivePlayer"
+
 
 
 
@@ -64,8 +64,7 @@ return (
 <Grid item xs={12} sm={6} style={{padding:'5px'}}><p>{this.state.gameinfo.description_raw}</p></Grid>
 
 <Grid item xs={12}>
-  {this.state.clip &&
-<ResponsivePlayer videoUrl={this.state.clip.clip}></ResponsivePlayer>}
+ 
 </Grid>
 
 
