@@ -1,73 +1,130 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:900&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Work+Sans:300&display=swap');
 
-.gamecards {width: 95%;}
+.sliderImg {
+  width: auto;
+  height: 45vw;
+}
 
-.filterButtons {background-color: black;color:white}
-.dotred, .dotblue, .dotyellow, .dotgreen {
+.gamecards {
+  width: 95%;
+}
+
+.centerDif {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.filterButtons {
+  background-color: black;
+  color: white
+}
+
+.dotred,
+.dotblue,
+.dotyellow,
+.dotgreen {
   min-height: 5px;
   max-height: 25px;
   height: 1.5vh;
   min-width: 5px;
   max-width: 25px;
-width: 1.5vh;  
+  width: 1.5vh;
   border-radius: 50%;
   display: inline-block;
 }
-.dotred{background-color: red;}
-.dotblue{background-color: blue;}
-.dotyellow{background-color: yellow;}
-.dotgreen{background-color: green;}
 
-.gameTitle {font-size: 3vw;}
+.dotred {
+  background-color: red;
+}
 
-.ratingtext {font-size:calc(5px + 0.6vw); display: inline-block;margin-left: 2px;margin-right: 2px;}
+.dotblue {
+  background-color: blue;
+}
+
+.dotyellow {
+  background-color: yellow;
+}
+
+.dotgreen {
+  background-color: green;
+}
+
+.gameTitle {
+  font-size: 3vw;
+}
+
+.ratingtext {
+  font-size: calc(8px + 0.2vw);
+  display: inline-block;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+.shapedBorder {
+  border: '0px solid black';
+  border-radius: '5px'
+}
+
+.headlines {
+  font-family: 'Montserrat', sans-serif;
+  text-decoration: none;
+  color: black
+}
+
+.headlinesBackground {
+  background-color: rgba(247, 247, 247, 0.7)
+}
 
 
-.headlines {font-family: 'Montserrat', sans-serif;
-            text-decoration: none;
-          color: black}
+.bodyhanspeter {
+  background: #43C6AC;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to top, #43C6AC, #191654);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to top, #43C6AC, #191654);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
 
-.headlinesBackground {background-color:rgba(247, 247, 247, 0.7)}
-
-
-.bodyhanspeter{background: #43C6AC;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to top, #43C6AC ,#191654);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to top, #43C6AC, #191654); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  }
-
-.genretext {position: absolute;
+.genretext {
+  position: absolute;
   width: 100%;
-  
-            margin-top: 40%}
-  .backImages {   background-size: 70% auto;
-    background-position: center;
-    background-repeat: no-repeat;
-    }
-  .pulseTitle {
-    text-overflow: ellipsis;
-    
-    font-size: 3vw;
- 
-    color: black;
-    background-color:rgba(247, 247, 247, 0.7);
-    /* text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; */
-    text-align: center;
-       
+
+  margin-top: 40%
+}
+
+.backImages {
+  background-size: 70% auto;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.pulseTitle {
+  text-overflow: ellipsis;
+
+  font-size: calc(9px + 0.6vw);
+
+  color: black;
+  background-color: rgba(247, 247, 247, 0.7);
+  /* text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; */
+  text-align: center;
+
 }
 
 
 .element {
-  
+
   height: 18vw;
   min-height: 100px;
+  max-height: 200px;
   width: 18vw;
   min-width: 100px;
+  max-width: 200px;
   margin: 15px;
-  
+
   animation-name: stretch;
-  animation-duration: 2s; 
-  animation-timing-function: ease-out; 
+  animation-duration: 2s;
+  animation-timing-function: ease-out;
   animation-delay: 0;
   animation-direction: alternate;
   animation-iteration-count: infinite;
@@ -75,6 +132,16 @@ width: 1.5vh;
   animation-play-state: running;
 }
 
+.infoStretch {
+  animation-name: stretch;
+  animation-duration: 2s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+  animation-fill-mode: none;
+  animation-play-state: running;
+}
 
 @keyframes stretch {
   0% {
@@ -82,9 +149,11 @@ width: 1.5vh;
     background-color: rgba(255, 255, 255, 0);
     border-radius: 100%;
   }
+
   50% {
     background-color: rgba(255, 255, 255, 0.486);
   }
+
   100% {
     transform: scale(0.9);
     background-color: white;
@@ -94,5 +163,11 @@ width: 1.5vh;
 body,
 html {
   font-family: 'Work Sans', sans-serif;
-  
+
+}
+
+ul,
+li {
+  margin: 0;
+  padding: 0
 }

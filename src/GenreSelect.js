@@ -1,8 +1,26 @@
 
 import React, { Component } from "react";
 import Genre from "./Genre"
-import Box from '@material-ui/core/Box';
+
 import {NavLink} from "react-router-dom";
+import Grid from '@material-ui/core/Grid';
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+const theme = createMuiTheme({
+  breakpoints: {
+     values: {
+      xs: 0,
+      sm: 550,
+      md: 600,
+      lg: 900,
+      xl: 1200
+    }
+  }
+});
+
+
+
+
+
 
 export class GenreSelect extends Component {
   state ={  genres:[],
@@ -20,18 +38,27 @@ export class GenreSelect extends Component {
   render() {
     
   return (
+    <div className="centerDiv">
+    <MuiThemeProvider theme={theme}>
+  <Grid container
+  direction="row"
+  justify="center"
+  alignItems="center">
     
-    <div>
-    
-    <Box display="flex"  flexDirection="row" p={1} m={2} flexWrap="wrap" alignContent="flex-end" justifyContent="center">
-    {this.state.genres.map((genre,index)=>{
-      return (<NavLink key={index} style={{textDecoration:'none'}} to={{pathname:'/games', genre:{slug: `${genre.slug}`}}}><Genre key={genre.id} start={index} genre={genre}></Genre></NavLink>)
-      })}</Box>
+     {this.state.genres.map((genre,index)=>{
+      return (
+        <Grid item align="center" xs={6} sm={4} md={3} lg={2} xl={2}>
+        <NavLink key={index}
+         style={{textDecoration:'none'}}
+          to={{pathname:'/games', genre:{slug: `${genre.slug}`}}}>
+          <Genre key={genre.id} start={index} genre={genre}>
+            </Genre>
+            </NavLink>
+            </Grid>)
+      })}
 
-      
-
-
-
+    </Grid>
+   </MuiThemeProvider>
     </div>
   )
 }}
