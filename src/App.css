@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:900&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Work+Sans:300&display=swap');
 
+
+
 .sliderImg {
   width: auto;
   height: 45vw;
@@ -13,11 +15,6 @@
 .centerDif {
   margin-left: auto;
   margin-right: auto;
-}
-
-.filterButtons {
-  background-color: black;
-  color: white
 }
 
 .dotred,
@@ -121,7 +118,7 @@
   min-width: 100px;
   max-width: 200px;
   margin: 15px;
-
+  border-radius: 15px;
   animation-name: stretch;
   animation-duration: 2s;
   animation-timing-function: ease-out;
@@ -171,3 +168,73 @@ li {
   margin: 0;
   padding: 0
 }
+
+
+/*------------------------Scroll Up button ------------------------*/
+
+
+.appBar {
+  background-color: #ffffff;
+  color: #00997a;
+  text-shadow: 1px 1px #d3e3fc;
+}
+
+.navButtons {
+  border: 0px;
+
+  color: #00997a;
+  padding: 1.2vw 2.4vw;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  background-color: #d3e3fc;
+}
+
+.navButtons a:visited {
+  color: #00997a
+}
+
+.home {
+  border-radius: 0px 10px 10px 0px
+}
+
+.back {
+  border-radius: 10px 0px 0px 10px
+}
+
+.searchText {
+  font-size: calc(8px + 0.2vw);
+  color: white;
+}
+
+.searchReset {
+  background-color: rgba(255, 255, 255, 0.562);
+  border: 0px;
+  border-radius: 40px;
+  font-size: 14px;
+  font-weight: 700;
+
+}
+
+.searchContainer {
+  width: 300px
+}
+p {display:inline;
+  font-size: calc(8px + 0.2vw)}
+
+strong {font-size: calc(8px + 0.2vw);}
+
+a:active,
+a:link,
+a:visited {
+  color: black
+}
+
+
+/* .ulInfo{list-style-type: none;
+  margin: 0;
+  padding: 0;}
+
+.liInfo{float: left;
+        margin-left: 5px;} */

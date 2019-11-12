@@ -1,6 +1,6 @@
 import React from "react";
 import CardMedia from "@material-ui/core/CardMedia";
-import Box from "@material-ui/core/Box";
+
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import { DefaultPlayer as Video } from "react-html5video";

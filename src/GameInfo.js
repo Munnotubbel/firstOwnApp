@@ -14,7 +14,9 @@ import "react-html5video/dist/styles.css";
 import AwesomeSlider from "react-awesome-slider";
 import "react-awesome-slider/dist/styles.css";
 import AwesomeSliderStyles from "react-awesome-slider/src/styled/cube-animation";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { responsiveFontSizes } from "@material-ui/core";
+import AgeRating from "./AgeRating"
 const opts = {
   height: "auto",
   width: "auto",
@@ -23,9 +25,22 @@ const opts = {
     controls: 1
   }
 };
+const theme = createMuiTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 550,
+      md: 600,
+      lg: 900,
+      xl: 1200
+    }
+  }
+});
+
 
 export class GameInfo extends Component {
   state = {
+    name: "",
     gameinfo: [],
     twitch: [],
     youtube: [],
@@ -39,12 +54,11 @@ export class GameInfo extends Component {
     genres: [],
     platforms: [],
     stores: [],
-    infofetch: [],
-    steam: [],
-    suggested: [],
-    screenshots: []
+    screenshots: [],
+    platforms_pc: []
   };
   async componentDidMount() {
+    document.getElementById("searchContainer").style.display = "none";
     var gameid = this.props.gameid;
 
     console.log("Game loaded! id: " + this.props.gameid);
@@ -53,6 +67,7 @@ export class GameInfo extends Component {
       .then(response => response.json())
       .then(response =>
         this.setState({
+          name: response.name,
           genres: response.genres,
           gameinfo: response,
           clip: response.clip,
@@ -60,10 +75,18 @@ export class GameInfo extends Component {
           rating: response.esrb_rating ? response.esrb_rating.id : 6,
           publishers: response.publishers,
           released: response.released,
-          stores: response.stores
-        })
+          stores: response.stores,
+          platforms_pc: response.platforms[0].requirements
+            ? response.platforms[0].requirements
+            : ""
+        },()=>this.props.change(`${this.state.name}`))
       );
     this.fetchMoreInfos();
+  }
+
+  componentWillUnmount() {
+    document.getElementById("searchContainer").style.display = "";
+    this.props.change(`Gamer's Pilot`)
   }
 
   fetchMoreInfos = () => {
@@ -93,24 +116,7 @@ export class GameInfo extends Component {
         })
       );
   };
-
-  ratingSelect = () => {
-    if (this.state.rating === 0) {
-      return "https://res.cloudinary.com/munnotubbel/image/upload/v1573406759/gamerspilot/earlyChild_far9pa.png";
-    } else if (this.state.rating === 1) {
-      return "https://res.cloudinary.com/munnotubbel/image/upload/v1573406759/gamerspilot/everyone_fguptx.png";
-    } else if (this.state.rating === 2) {
-      return "https://res.cloudinary.com/munnotubbel/image/upload/v1573406759/gamerspilot/everyoneTenPlus_idl5jh.png";
-    } else if (this.state.rating === 3) {
-      return "https://res.cloudinary.com/munnotubbel/image/upload/v1573406759/gamerspilot/teenPlus_k8kb8e.png";
-    } else if (this.state.rating === 4) {
-      return "https://res.cloudinary.com/munnotubbel/image/upload/v1573406759/gamerspilot/mature_vo4sm1.png";
-    } else if (this.state.rating === 5) {
-      return "https://res.cloudinary.com/munnotubbel/image/upload/v1573406759/gamerspilot/adultsOnly_kpoahs.png";
-    } else if (this.state.rating === 6) {
-      return "https://res.cloudinary.com/munnotubbel/image/upload/v1573406759/gamerspilot/ratingPending_krafuu.png";
-    }
-  };
+  
   getStoreLogo = storeID => {
     if (storeID === 1) {
       return "https://res.cloudinary.com/munnotubbel/image/upload/v1573412358/gamerspilot/steam_trnjnr.png";
@@ -136,25 +142,29 @@ export class GameInfo extends Component {
   };
 
   render() {
+    /*  let requirements = null;
+    if (this.state.platforms[0].requirements) console.log("ist da");
+ */
     if (this.state.gameinfo) console.log(this.state.gameinfo);
     // console.log(this.state.rating);
-    if (this.state.movies) console.log(this.state.movies);
+    // if (this.state) console.log(this.state);
+    // if (this.state.platforms_pc)
+    // console.log(this.state.platforms_pc.recommended);
     const bildurl = this.state.gameinfo.background_image;
     const youtubeUrl = this.state.youtube.external_id;
     return (
-      <Grid
+      <MuiThemeProvider theme={theme}>
+      <Grid                                                                     //iiii start of
         container
-        spacing={2}
-        alignItems="center"
+        spacing={3}
         justify="center"
-        style={{ width: "100%" }}
+       
+        style={{ width: "100%",marginTop:'20px' }}
       >
-        <Grid item align="center" xs={12}>
-          <h3>{this.state.gameinfo.name}</h3>
-        </Grid>
+        
 
         {this.state.gameinfo && (
-          <Grid item align="center" xs={12} sm={8} style={{ padding: "5px" }}>
+          <Grid item align="center" xs={12} sm={6} md={6} lg={6} xl={6} > 
             <img
               style={{ width: "100%" }}
               alt={this.state.gameinfo.name}
@@ -163,8 +173,58 @@ export class GameInfo extends Component {
           </Grid>
         )}
 
-        <Grid item xs={10} sm={10} md={10}>
-          {this.state.movies ? (
+        <Grid container spacing={2} xs={9} sm={5} md={5} lg={6} xl={5} style={{ marginBottom:'20px'}}>                                                      
+       <Grid item xs={12} sm={6} md={6} lg={6} xl={6}> 
+            <strong>Released: </strong>
+            {this.state.released && <p className="liInfo">{this.state.released}</p>}
+          </Grid>
+                                                        
+          <Grid item xs={12} sm={7} md={7} lg={6} xl={7}>
+            <strong>Genres: </strong>
+            {this.state.genres &&
+              this.state.genres.map(genre => {
+                return <p>{genre.name} </p>;
+              })}
+          </Grid>
+          <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>                                                      
+          
+            <strong>Developers: </strong>
+            {this.state.developers &&
+              this.state.developers.map(dev => {
+                return <p>{dev.name} </p>;
+              })}
+              </Grid>
+          <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>                                                      
+         
+            <strong>Publishers: </strong>
+            {this.state.publishers &&
+              this.state.publishers.map(pub => {
+                return <p>{pub.name} </p>;
+              })}
+          
+        </Grid>
+
+        </Grid>
+          
+        
+
+
+    
+<Hidden smUp>
+        <Grid item xs={3} sm={6} md={6} lg={6} xl={6}>                                                      
+          {this.state.rating && 
+            <AgeRating ratingID={this.state.rating}/>
+            
+          }
+        </Grid></Hidden>
+
+      
+
+    
+
+{this.state.movies ? 
+        <Grid item xs={10} sm={10} md={10} lg={10} xl={10} style={{marginBottom:'50px', marginTop:'30px'}}>                                    
+          
             <AwesomeSlider cssModule={AwesomeSliderStyles}>
               {this.state.movies.map((vid, index) => {
                 return (
@@ -181,69 +241,38 @@ export class GameInfo extends Component {
                 );
               })}
             </AwesomeSlider>
-          ) : (
-            ""
-          )}
-        </Grid>
+            </Grid>
+            
+          
+        :""}
 
-        <Grid
+        <Grid                                                                  
           item
           align="center"
-          xs={11}
-          sm={11}
+          xs={10}
+          sm={10}
+          md={10}
+          lg={10}
+          xl={10}
           style={{ padding: "5px", textAlign: "left" }}
         >
-          <p style={{ marginTop: "50px" }}>
+          <p>
             {this.state.gameinfo.description_raw}
           </p>
         </Grid>
+        <Hidden smDown>
+        <Grid item sm={4} md={4} lg={4} xl={4}>                                                      
+          {this.state.rating && 
+            <AgeRating ratingID={this.state.rating}/>
+            
+          }
+        </Grid></Hidden>
 
-        <Grid item xs={8}>
-          <ul>
-            <h4>Developers:</h4>
-            {this.state.developers &&
-              this.state.developers.map(dev => {
-                return <li>{dev.name}</li>;
-              })}
-          </ul>
-        </Grid>
+  
 
-        <Grid item xs={4}>
-          {this.state.rating && (
-            <img width="82px" height="124" src={this.ratingSelect()}></img>
-          )}
-        </Grid>
-
-        <Grid item xs={8}>
-          <ul>
-            <h4>Publishers:</h4>
-            {this.state.publishers &&
-              this.state.publishers.map(pub => {
-                return <li>{pub.name}</li>;
-              })}
-          </ul>
-        </Grid>
-
-        <Grid item xs={4}>
-          <ul>
-            <h4>Released:</h4>
-            {this.state.released && <li>{this.state.released}</li>}
-          </ul>
-        </Grid>
-
-        <Grid item xs={8}>
-          <ul>
-            <h4>Genres:</h4>
-            {this.state.genres &&
-              this.state.genres.map(genre => {
-                return <li>{genre.name}</li>;
-              })}
-          </ul>
-        </Grid>
-
-        <Grid item xs={12}>
+        <Grid item xs={6} sm={4} md={4} lg={4} xl={4}>                                                      
           <ul style={{ listStyleType: "none" }}>
-            <h4>Shop at:</h4>
+            <strong>Shop at:</strong>
             {this.state.stores[0] ? (
               this.state.stores.map((buy, index) => {
                 var storeID = buy.store.id;
@@ -271,13 +300,16 @@ export class GameInfo extends Component {
             )}
           </ul>
         </Grid>
-        {this.state.youtube && (
-          <Grid item align="center" xs={10} sm={10}>
+
+      
+
+        {this.state.youtube && (                              
+          <Grid item align="center" xs={10} sm={10} style={{marginTop:'50px'}}>                            
             <MediaSlider movies={this.state.youtube}></MediaSlider>
           </Grid>
         )}
 
-        <Grid item align="center" xs={10} sm={10}>
+        <Grid item align="center" xs={10} sm={10} style={{marginBottom:'50px', marginTop:'50px'}}>                               
           {this.state.screenshots ? (
             <AwesomeSlider cssModule={AwesomeSliderStyles}>
               {this.state.screenshots.map(screens => {
@@ -292,7 +324,18 @@ export class GameInfo extends Component {
             ""
           )}
         </Grid>
-      </Grid>
+
+        <Grid item xs={11} sm={5} md={5} lg={5} xl={5}>                                                      
+          {this.state.platforms_pc && this.state.platforms_pc.minimum}
+        </Grid>
+
+        <Grid item  xs={11} sm={5} md={5} lg={5} xl={5}>
+          {this.state.platforms_pc && this.state.platforms_pc.recommended}      
+        </Grid>
+
+
+      </Grid>  
+      </MuiThemeProvider>                                                         
     );
   }
 }
