@@ -5,6 +5,7 @@ import GoBack from "./GoBack";
 import GoHome from "./GoHome";
 import Search from "./Search";
 import Grid from "@material-ui/core/Grid";
+import { NavLink } from "react-router-dom";
 
 import GenreSelect from "./GenreSelect";
 import GameOverview from "./GameOverview";
@@ -49,7 +50,14 @@ ElevationScroll.propTypes = {
 };
 
 class App extends Component {
-  state = { platform: "", genre: "", gameid: "", gamename: "", title:"Gamer's Pilot",titleSize: 5 };
+  state = {
+    platform: "",
+    genre: "",
+    gameid: "",
+    gamename: "",
+    title: "Gamer's Pilot",
+    titleSize: 5
+  };
 
   platformPicked = props => {
     if (props.location.platform) {
@@ -88,12 +96,22 @@ class App extends Component {
     return <GameInfo change={this.updateTitle} gameid={this.state.gameid} />;
   };
 
-  updateTitle=(title)=>{
-    if (title==="Gamer's Pilot"){
-    this.setState({title: title,titleSize: 5 }, console.log("----------Titel updated------------"))}
-else {this.setState({title: title,titleSize: 7 }, console.log("----------Titel updated------------"))}
+  updateTitle = title => {
+    if (title === "Gamer's Pilot") {
+      this.setState(
+        { title: title, titleSize: 5 },
+        console.log("----------Titel updated------------")
+      );
+    } else {
+      this.setState(
+        { title: title, titleSize: 7 },
+        console.log("----------Titel updated------------")
+      );
+    }
+  };
+  GoHome() {
+    return <PlatformSelect />;
   }
-
   render() {
     const { classes } = this.props;
 
@@ -104,31 +122,52 @@ else {this.setState({title: title,titleSize: 7 }, console.log("----------Titel u
           <React.Fragment>
             <CssBaseline />
             <ElevationScroll {...this.props}>
-              <AppBar style={{position: 'sticky'}}>
+              <AppBar style={{ position: "sticky" }}>
                 <Toolbar className="appBar">
-                  <Grid container  direction="row" justify="space-between" spacing={4}>
-                  <GoHome />
-                    <Typography variant={`h${this.state.titleSize}`} style={{maxWidth:'200px',overflowX:'hidden'}}>{this.state.title}</Typography>
+                  <Grid
+                    container
+                    direction="row"
+                    justify="space-between"
+                    spacing={4}
+                  >
+                    <GoHome />
+                    <Grid
+                      item
+                      align="center"
+                      xs={12}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                    >
+                      <Typography
+                        variant={`h${this.state.titleSize}`}
+                        style={{ maxWidth: "200px", overflowX: "hidden" }}
+                      >
+                        {this.state.title}
+                      </Typography>
+                    </Grid>
                     <GoBack />
                   </Grid>
                 </Toolbar>
-               
               </AppBar>
             </ElevationScroll>
-            
           </React.Fragment>
-          
 
           <Grid container>
-          <Search />
+            <Search />
             <Route exact path="/" component={PlatformSelect} />
             <Route path="/genres" component={this.platformPicked} />
             <Route path="/games" component={this.genrePicked} />
             <Route path="/gameinfo" component={this.gamePicked} />
           </Grid>
-       
         </HashRouter>
-        <ScrollUpButton EasingType="easeOutBack" ShowAtPosition={150} />
+        <ScrollUpButton
+          style={{ zIndex: "20" }}
+          ToggledStyle={{ right: "83%" }}
+          EasingType="easeOutBack"
+          ShowAtPosition={150}
+        />
       </React.Fragment>
     );
   }

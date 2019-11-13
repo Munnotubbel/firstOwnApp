@@ -99,7 +99,7 @@ class PlatformSelect extends Component {
         id: 13,
         name: "3DO",
         url:
-          "https://res.cloudinary.com/munnotubbel/image/upload/v1573056923/gamerspilot/3do_tgt0vr.png"
+          "https://res.cloudinary.com/munnotubbel/image/upload/v1573598181/gamerspilot/3do_trans_yjbopb.png"
       },
 
       {
@@ -116,13 +116,21 @@ class PlatformSelect extends Component {
       <MuiThemeProvider theme={theme}>
         <Grid container direction="row" justify="center" alignItems="center">
           {this.state.platforms.map((platform, index) => (
-            <Grid item align="center" xs={6} sm={4} md={3} lg={2} xl={2}>
+            <Grid
+              item
+              key={`platformGrid${index}`}
+              align="center"
+              xs={6}
+              sm={4}
+              md={3}
+              lg={2}
+              xl={2}
+            >
               <NavLink
-                key={index}
                 style={{ textDecoration: "none" }}
                 to={{ pathname: "/genres", platform: { id: `${platform.id}` } }}
               >
-                <Platform platform={platform}></Platform>
+                <Platform platform={platform} start={index}></Platform>
               </NavLink>
             </Grid>
           ))}

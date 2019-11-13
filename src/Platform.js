@@ -9,7 +9,7 @@ const Platform = ({platform,start}) =>{
 
 return(
     <Box className="element backImages" style={{backgroundImage: `url(${bildurl}`,
-    animationDelay:`0.${start}s`,
+    animationDelay:`${3-start*(3/13)}s`,
        }}>
       <Box className="pulseTitle headlines"  style={{backgroundColor:'rgba(255, 255, 255, 0)'}}>{platform.name}</Box>
     

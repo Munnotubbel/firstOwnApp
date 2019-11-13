@@ -12,7 +12,7 @@ return(
        backgroundSize: 'cover',
        backgroundPosition: 'center',
        backgroundRepeat: 'no-repeat',
-       animationDelay:`0.${start}s`,
+       animationDelay:`${3-start*(3/19)}s`,
        border:'0px solid #000000'}}>
       <Box className="pulseTitle genretext headlines" style={{border: '0px solid black',borderRadius: '5px' }}>{genre.name}</Box>
     

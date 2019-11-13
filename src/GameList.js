@@ -1,8 +1,6 @@
 import React from "react";
 import Vid from "./Vid";
-import Hidden from "@material-ui/core/Hidden";
 import { NavLink } from "react-router-dom";
-import CardMedia from "@material-ui/core/CardMedia";
 import Grid from "@material-ui/core/Grid";
 import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
@@ -111,7 +109,7 @@ const GameList = gameinfo => {
               }}
             >
               <img
-                className="infoStretch"
+                className="bell"
                 width="35px"
                 height="35x"
                 alt="infoButton"

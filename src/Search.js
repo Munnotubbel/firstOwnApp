@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
+
 import TextField from "@material-ui/core/TextField";
-import onClickOutside from "react-onclickoutside";
-import { height } from "@material-ui/system";
+
 import { NavLink } from "react-router-dom";
 
 class Search extends Component {
@@ -77,44 +76,43 @@ class Search extends Component {
             </button>
           </form>
         </Grid>
-
         <Grid
+          item
           xs={8}
           sm={8}
           md={8}
           lg={8}
           xl={8}
-          container
-          spacing={2}
-          className="searchContainer"
-          direction="row"
-          id="searchResults"
-          ref={node => (this.node = node)}
           style={{
             position: "absolute",
             display: "none",
             backgroundColor: "white",
 
             marginTop: "35px",
-            zIndex: "5"
+            zIndex: "500"
           }}
+          className="searchContainer"
+          id="searchResults"
+          ref={node => (this.node = node)}
         >
-          {this.state.dataSearch.map(game => {
-            return (
-              <Grid item xs={10} sm={5} md={4} lg={4} xl={4}>
-                <NavLink
-                  className="searchText"
-                  to={{
-                    pathname: "/gameinfo",
-                    gameinfo: `${game.id}`,
-                    gamename: `${game.name}`
-                  }}
-                >
-                  {game.name}
-                </NavLink>
-              </Grid>
-            );
-          })}
+          <Grid container spacing={2} direction="row">
+            {this.state.dataSearch.map(game => {
+              return (
+                <Grid item xs={10} sm={5} md={4} lg={4} xl={4}>
+                  <NavLink
+                    className="searchText"
+                    to={{
+                      pathname: "/gameinfo",
+                      gameinfo: `${game.id}`,
+                      gamename: `${game.name}`
+                    }}
+                  >
+                    {game.name}
+                  </NavLink>
+                </Grid>
+              );
+            })}
+          </Grid>
         </Grid>
       </Grid>
     );

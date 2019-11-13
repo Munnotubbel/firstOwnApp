@@ -9,8 +9,7 @@ import YouTube from 'react-youtube';
 
 
 const opts = {
-  height: 'auto',
-  width: 'auto',
+  
   playerVars: { 
     autoplay: 0,
     conrols: 1
@@ -24,7 +23,7 @@ const MediaSlider = ({movies})=>{
 
   {movies.map((tubes)=>{
 return(
-  <div style={{width:'100%'}}>
+  <div>
   <YouTube
   opts={opts}
 

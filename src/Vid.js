@@ -7,14 +7,6 @@ import { DefaultPlayer as Video } from "react-html5video";
 import "react-html5video/dist/styles.css";
 
 const Vid = ({ gameinfo, index }) => {
-  const styles = {
-    marginLeft: "40%",
-    marginRight: "40% ",
-    position: "absolute",
-    marginTop: "50px",
-    width: "50px"
-  };
-
   let clips = null;
   if (gameinfo.clip) clips = gameinfo.clip.clips;
 
@@ -22,7 +14,7 @@ const Vid = ({ gameinfo, index }) => {
   const mov = `mov${gameinfo.id}`;
 
   const pic = `pic${gameinfo.id}`;
-  const button = `${gameinfo.id}`;
+
   const titleID = `title${gameinfo.id}`;
 
   return (
@@ -34,7 +26,7 @@ const Vid = ({ gameinfo, index }) => {
         style={{
           position: "absolute",
           marginTop: "-1px",
-          zIndex: "50",
+          zIndex: "2",
           overflowX: "hidden"
         }}
       >

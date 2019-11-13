@@ -4,9 +4,9 @@ import Hidden from "@material-ui/core/Hidden";
 import MediaSlider from "./MediaSlider";
 import PropTypes from "prop-types";
 import withWidth from "@material-ui/core/withWidth";
-import YouTube from "react-youtube";
+
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Carousel } from "react-responsive-carousel";
+
 import "./App.css";
 import PricePicker from "./PricePicker";
 import { DefaultPlayer as Video } from "react-html5video";
@@ -15,16 +15,11 @@ import AwesomeSlider from "react-awesome-slider";
 import "react-awesome-slider/dist/styles.css";
 import AwesomeSliderStyles from "react-awesome-slider/src/styled/cube-animation";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { responsiveFontSizes } from "@material-ui/core";
-import AgeRating from "./AgeRating"
-const opts = {
-  height: "auto",
-  width: "auto",
-  playerVars: {
-    autoplay: 0,
-    controls: 1
-  }
-};
+
+import AgeRating from "./AgeRating";
+import CardContent from "@material-ui/core/CardContent";
+import Card from "@material-ui/core/Card";
+
 const theme = createMuiTheme({
   breakpoints: {
     values: {
@@ -37,7 +32,6 @@ const theme = createMuiTheme({
   }
 });
 
-
 export class GameInfo extends Component {
   state = {
     name: "",
@@ -45,7 +39,7 @@ export class GameInfo extends Component {
     twitch: [],
     youtube: [],
     clip: [],
-    youtube: [],
+
     movies: [],
     developers: [],
     rating: "",
@@ -66,27 +60,30 @@ export class GameInfo extends Component {
     fetch(`https://api.rawg.io/api/games/${gameid}`)
       .then(response => response.json())
       .then(response =>
-        this.setState({
-          name: response.name,
-          genres: response.genres,
-          gameinfo: response,
-          clip: response.clip,
-          developers: response.developers,
-          rating: response.esrb_rating ? response.esrb_rating.id : 6,
-          publishers: response.publishers,
-          released: response.released,
-          stores: response.stores,
-          platforms_pc: response.platforms[0].requirements
-            ? response.platforms[0].requirements
-            : ""
-        },()=>this.props.change(`${this.state.name}`))
+        this.setState(
+          {
+            name: response.name,
+            genres: response.genres,
+            gameinfo: response,
+            clip: response.clip,
+            developers: response.developers,
+            rating: response.esrb_rating ? response.esrb_rating.id : 6,
+            publishers: response.publishers,
+            released: response.released,
+            stores: response.stores,
+            platforms_pc: response.platforms[0].requirements
+              ? response.platforms[0].requirements
+              : ""
+          },
+          () => this.props.change(`${this.state.name}`)
+        )
       );
     this.fetchMoreInfos();
   }
 
   componentWillUnmount() {
     document.getElementById("searchContainer").style.display = "";
-    this.props.change(`Gamer's Pilot`)
+    this.props.change(`Gamer's Pilot`);
   }
 
   fetchMoreInfos = () => {
@@ -116,7 +113,7 @@ export class GameInfo extends Component {
         })
       );
   };
-  
+
   getStoreLogo = storeID => {
     if (storeID === 1) {
       return "https://res.cloudinary.com/munnotubbel/image/upload/v1573412358/gamerspilot/steam_trnjnr.png";
@@ -142,9 +139,9 @@ export class GameInfo extends Component {
   };
 
   render() {
-    /*  let requirements = null;
-    if (this.state.platforms[0].requirements) console.log("ist da");
- */
+    let requirements = null;
+    if (this.state.gameinfo) console.log(this.state.gameinfo);
+
     if (this.state.gameinfo) console.log(this.state.gameinfo);
     // console.log(this.state.rating);
     // if (this.state) console.log(this.state);
@@ -154,188 +151,227 @@ export class GameInfo extends Component {
     const youtubeUrl = this.state.youtube.external_id;
     return (
       <MuiThemeProvider theme={theme}>
-      <Grid                                                                     //iiii start of
-        container
-        spacing={3}
-        justify="center"
-       
-        style={{ width: "100%",marginTop:'20px' }}
-      >
-        
-
-        {this.state.gameinfo && (
-          <Grid item align="center" xs={12} sm={6} md={6} lg={6} xl={6} > 
-            <img
-              style={{ width: "100%" }}
-              alt={this.state.gameinfo.name}
-              src={bildurl}
-            ></img>
-          </Grid>
-        )}
-
-        <Grid container spacing={2} xs={9} sm={5} md={5} lg={6} xl={5} style={{ marginBottom:'20px'}}>                                                      
-       <Grid item xs={12} sm={6} md={6} lg={6} xl={6}> 
-            <strong>Released: </strong>
-            {this.state.released && <p className="liInfo">{this.state.released}</p>}
-          </Grid>
-                                                        
-          <Grid item xs={12} sm={7} md={7} lg={6} xl={7}>
-            <strong>Genres: </strong>
-            {this.state.genres &&
-              this.state.genres.map(genre => {
-                return <p>{genre.name} </p>;
-              })}
-          </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>                                                      
-          
-            <strong>Developers: </strong>
-            {this.state.developers &&
-              this.state.developers.map(dev => {
-                return <p>{dev.name} </p>;
-              })}
-              </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>                                                      
-         
-            <strong>Publishers: </strong>
-            {this.state.publishers &&
-              this.state.publishers.map(pub => {
-                return <p>{pub.name} </p>;
-              })}
-          
-        </Grid>
-
-        </Grid>
-          
-        
-
-
-    
-<Hidden smUp>
-        <Grid item xs={3} sm={6} md={6} lg={6} xl={6}>                                                      
-          {this.state.rating && 
-            <AgeRating ratingID={this.state.rating}/>
-            
-          }
-        </Grid></Hidden>
-
-      
-
-    
-
-{this.state.movies ? 
-        <Grid item xs={10} sm={10} md={10} lg={10} xl={10} style={{marginBottom:'50px', marginTop:'30px'}}>                                    
-          
-            <AwesomeSlider cssModule={AwesomeSliderStyles}>
-              {this.state.movies.map((vid, index) => {
-                return (
-                  <div style={{ width: "100%" }}>
-                    <Video
-                      id={`video${index}`}
-                      controls={["PlayPause", "Time", "Volume", "Fullscreen"]}
-                      loop={true}
-                      poster={vid.preview}
-                    >
-                      <source src={vid.data[480]} />
-                    </Video>
-                  </div>
-                );
-              })}
-            </AwesomeSlider>
-            </Grid>
-            
-          
-        :""}
-
-        <Grid                                                                  
-          item
-          align="center"
-          xs={10}
-          sm={10}
-          md={10}
-          lg={10}
-          xl={10}
-          style={{ padding: "5px", textAlign: "left" }}
+        <Grid //iiii start of
+          container
+          spacing={3}
+          justify="center"
+          alignItems="center"
+          style={{ width: "100%", marginTop: "20px" }}
         >
-          <p>
-            {this.state.gameinfo.description_raw}
-          </p>
-        </Grid>
-        <Hidden smDown>
-        <Grid item sm={4} md={4} lg={4} xl={4}>                                                      
-          {this.state.rating && 
-            <AgeRating ratingID={this.state.rating}/>
-            
-          }
-        </Grid></Hidden>
+          {this.state.gameinfo && (
+            <Grid item align="center" xs={11} sm={6} md={6} lg={6} xl={6}>
+              <img
+                style={{ width: "100%" }}
+                alt={this.state.gameinfo.name}
+                src={bildurl}
+              ></img>
+            </Grid>
+          )}
 
-  
+          <Grid
+            container
+            spacing={2}
+            xs={8}
+            sm={5}
+            md={5}
+            lg={6}
+            xl={5}
+            style={{ marginBottom: "20px", paddingLeft: "20px" }}
+          >
+            <Card>
+              <CardContent>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+                  <strong>Released: </strong>
+                  {this.state.released && (
+                    <p className="liInfo">{this.state.released}</p>
+                  )}
+                </Grid>
 
-        <Grid item xs={6} sm={4} md={4} lg={4} xl={4}>                                                      
-          <ul style={{ listStyleType: "none" }}>
-            <strong>Shop at:</strong>
-            {this.state.stores[0] ? (
-              this.state.stores.map((buy, index) => {
-                var storeID = buy.store.id;
-                var url = buy.url;
-                var storeName = buy.store.name;
-                return (
-                  <li>
-                    <img
-                      style={{
-                        verticalAlign: "-12px",
-                        marginRight: "5px",
-                        width: "32px"
-                      }}
-                      src={this.getStoreLogo(storeID)}
-                    ></img>
-                    <a id={"link" + storeID} href={url}>
-                      {buy.store.name}&nbsp;
-                      <PricePicker storeID={storeID} url={url} />
-                    </a>
-                  </li>
-                );
-              })
-            ) : (
-              <li>not available</li>
-            )}
-          </ul>
-        </Grid>
-
-      
-
-        {this.state.youtube && (                              
-          <Grid item align="center" xs={10} sm={10} style={{marginTop:'50px'}}>                            
-            <MediaSlider movies={this.state.youtube}></MediaSlider>
+                <Grid item xs={12} sm={12} md={7} lg={6} xl={7}>
+                  <strong>Genres: </strong>
+                  {this.state.genres &&
+                    this.state.genres.map(genre => {
+                      return <p>{genre.name} </p>;
+                    })}
+                </Grid>
+                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                  <strong>Developers: </strong>
+                  {this.state.developers &&
+                    this.state.developers.map(dev => {
+                      return <p>{dev.name} </p>;
+                    })}
+                </Grid>
+                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                  <strong>Publishers: </strong>
+                  {this.state.publishers &&
+                    this.state.publishers.map(pub => {
+                      return <p>{pub.name} </p>;
+                    })}
+                </Grid>
+              </CardContent>
+            </Card>
           </Grid>
-        )}
 
-        <Grid item align="center" xs={10} sm={10} style={{marginBottom:'50px', marginTop:'50px'}}>                               
-          {this.state.screenshots ? (
-            <AwesomeSlider cssModule={AwesomeSliderStyles}>
-              {this.state.screenshots.map(screens => {
-                return (
-                  <div>
-                    <img className="sliderImg" src={screens.image}></img>
-                  </div>
-                );
-              })}
-            </AwesomeSlider>
+          <Hidden smUp>
+            <Grid
+              item
+              align="center"
+              xs={4}
+              sm={6}
+              md={6}
+              lg={6}
+              xl={6}
+              style={{ marginBottom: "20px", marginLeft: "5px" }}
+            >
+              {this.state.rating && <AgeRating ratingID={this.state.rating} />}
+            </Grid>
+          </Hidden>
+
+          {this.state.movies ? (
+            <Grid
+              item
+              xs={10}
+              sm={10}
+              md={10}
+              lg={10}
+              xl={10}
+              style={{ marginBottom: "50px" }}
+            >
+              <AwesomeSlider cssModule={AwesomeSliderStyles}>
+                {this.state.movies.map((vid, index) => {
+                  return (
+                    <div style={{ width: "100%" }}>
+                      <Video
+                        id={`video${index}`}
+                        controls={["PlayPause", "Time", "Volume", "Fullscreen"]}
+                        loop={true}
+                        poster={vid.preview}
+                      >
+                        <source src={vid.data[480]} />
+                      </Video>
+                    </div>
+                  );
+                })}
+              </AwesomeSlider>
+            </Grid>
           ) : (
             ""
           )}
+
+          <Grid
+            item
+            align="center"
+            xs={10}
+            sm={10}
+            md={10}
+            lg={10}
+            xl={10}
+            style={{ padding: "5px", textAlign: "left" }}
+          >
+            <Card>
+              <CardContent>
+                <p style={{ padding: "5px" }}>
+                  {this.state.gameinfo.description_raw}
+                </p>
+              </CardContent>{" "}
+            </Card>
+          </Grid>
+          <Hidden smDown>
+            <Grid item sm={4} md={4} lg={4} xl={4}>
+              {this.state.rating && <AgeRating ratingID={this.state.rating} />}
+            </Grid>
+          </Hidden>
+
+          <Grid item xs={8} sm={4} md={4} lg={4} xl={4}>
+            <ul style={{ listStyleType: "none" }}>
+              <strong>Shop at:</strong>
+              {this.state.stores[0] ? (
+                this.state.stores.map((buy, index) => {
+                  var storeID = buy.store.id;
+                  var url = buy.url;
+                  var storeName = buy.store.name;
+                  return (
+                    <li>
+                      <img
+                        style={{
+                          verticalAlign: "-12px",
+                          marginRight: "5px",
+                          width: "32px"
+                        }}
+                        src={this.getStoreLogo(storeID)}
+                      ></img>
+                      <a id={"link" + storeID} href={url}>
+                        {buy.store.name}&nbsp;
+                        <PricePicker storeID={storeID} url={url} />
+                      </a>
+                    </li>
+                  );
+                })
+              ) : (
+                <li>not available</li>
+              )}
+            </ul>
+          </Grid>
+
+          {this.state.youtube && (
+            <Grid
+              item
+              align="center"
+              xs={10}
+              sm={10}
+              style={{ marginTop: "50px" }}
+            >
+              <MediaSlider movies={this.state.youtube}></MediaSlider>
+            </Grid>
+          )}
+
+          <Grid
+            item
+            align="center"
+            xs={10}
+            sm={10}
+            style={{ marginBottom: "50px", marginTop: "50px" }}
+          >
+            {this.state.screenshots ? (
+              <AwesomeSlider cssModule={AwesomeSliderStyles}>
+                {this.state.screenshots.map(screens => {
+                  return (
+                    <div>
+                      <img className="sliderImg" src={screens.image}></img>
+                    </div>
+                  );
+                })}
+              </AwesomeSlider>
+            ) : (
+              ""
+            )}
+          </Grid>
+
+          <Grid item xs={11} sm={5} md={5} lg={5} xl={5}>
+            <Card>
+              <CardContent>
+                {this.state.platforms_pc && this.state.platforms_pc.minimum}
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid
+            item
+            xs={11}
+            sm={5}
+            md={5}
+            lg={5}
+            xl={5}
+            style={{ marginBottom: "55px" }}
+          >
+            <Card>
+              <CardContent>
+                {this.state.platforms_pc && this.state.platforms_pc.recommended}
+              </CardContent>
+            </Card>
+          </Grid>
         </Grid>
-
-        <Grid item xs={11} sm={5} md={5} lg={5} xl={5}>                                                      
-          {this.state.platforms_pc && this.state.platforms_pc.minimum}
-        </Grid>
-
-        <Grid item  xs={11} sm={5} md={5} lg={5} xl={5}>
-          {this.state.platforms_pc && this.state.platforms_pc.recommended}      
-        </Grid>
-
-
-      </Grid>  
-      </MuiThemeProvider>                                                         
+      </MuiThemeProvider>
     );
   }
 }
