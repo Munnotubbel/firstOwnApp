@@ -3,7 +3,11 @@ import Platform from "./Platform";
 import { NavLink } from "react-router-dom";
 
 import Grid from "@material-ui/core/Grid";
+
+
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+
+import {connect} from 'react-redux';
 const theme = createMuiTheme({
   breakpoints: {
     values: {
@@ -92,7 +96,7 @@ class PlatformSelect extends Component {
         id: 11,
         name: "Sega",
         url:
-          "https://res.cloudinary.com/munnotubbel/image/upload/v1573056924/gamerspilot/playstation_gha6db.png"
+          "https://res.cloudinary.com/munnotubbel/image/upload/v1573721710/gamerspilot/sega_transparent400_hwxisi.png"
       },
 
       {
@@ -112,6 +116,7 @@ class PlatformSelect extends Component {
   };
 
   render() {
+    
     return (
       <MuiThemeProvider theme={theme}>
         <Grid container direction="row" justify="center" alignItems="center">
@@ -139,5 +144,9 @@ class PlatformSelect extends Component {
     );
   }
 }
-
-export default PlatformSelect;
+const mapStateToProps = (state) => {
+  return {
+    projects: state.projects.projects
+  }
+}
+export default connect(mapStateToProps)(PlatformSelect);

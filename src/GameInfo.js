@@ -19,12 +19,13 @@ import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import AgeRating from "./AgeRating";
 import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
+import PlatformAvailable from "./PlatformAvailable";
 
 const theme = createMuiTheme({
   breakpoints: {
     values: {
       xs: 0,
-      sm: 550,
+      sm: 450,
       md: 600,
       lg: 900,
       xl: 1200
@@ -49,7 +50,9 @@ export class GameInfo extends Component {
     platforms: [],
     stores: [],
     screenshots: [],
-    platforms_pc: []
+    platforms_pc: [],
+    plat: [],
+    allplat: []
   };
   async componentDidMount() {
     document.getElementById("searchContainer").style.display = "none";
@@ -96,15 +99,15 @@ export class GameInfo extends Component {
       .then(response =>
         this.setState({ movies: response.results[0] ? response.results : "" })
       );
-    fetch(
-      `https://api.rawg.io/api/games/${gameid}/suggested?page_size=40?page=1`
-    )
+
+    fetch(`https://api.rawg.io/api/platforms`)
       .then(response => response.json())
       .then(response =>
         this.setState({
-          suggested: response
+          allplat: response
         })
       );
+
     fetch(`https://api.rawg.io/api/games/${gameid}/screenshots`)
       .then(response => response.json())
       .then(response =>
@@ -137,11 +140,14 @@ export class GameInfo extends Component {
       return "https://res.cloudinary.com/munnotubbel/image/upload/v1573412359/gamerspilot/epic_xqcdsg.png";
     }
   };
-
+  rawMarkup() {
+    var rawMarkup = this.props.content;
+    return { __html: rawMarkup };
+  }
   render() {
     let requirements = null;
-    if (this.state.gameinfo) console.log(this.state.gameinfo);
 
+    if (this.state.allplat) console.log(this.state.allplat);
     if (this.state.gameinfo) console.log(this.state.gameinfo);
     // console.log(this.state.rating);
     // if (this.state) console.log(this.state);
@@ -159,7 +165,7 @@ export class GameInfo extends Component {
           style={{ width: "100%", marginTop: "20px" }}
         >
           {this.state.gameinfo && (
-            <Grid item align="center" xs={11} sm={6} md={6} lg={6} xl={6}>
+            <Grid item align="center" xs={11} sm={6} md={6} lg={8} xl={8}>
               <img
                 style={{ width: "100%" }}
                 alt={this.state.gameinfo.name}
@@ -167,66 +173,89 @@ export class GameInfo extends Component {
               ></img>
             </Grid>
           )}
-
-          <Grid
-            container
-            spacing={2}
-            xs={8}
-            sm={5}
-            md={5}
-            lg={6}
-            xl={5}
-            style={{ marginBottom: "20px", paddingLeft: "20px" }}
-          >
-            <Card>
-              <CardContent>
-                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-                  <strong>Released: </strong>
+          <Grid item xs={7} sm={6} md={6} lg={4} xl={4}>
+            <Grid container spacing={3}>
+              <Card>
+                <CardContent>
                   {this.state.released && (
-                    <p className="liInfo">{this.state.released}</p>
+                    <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                      <p>
+                        <strong>Released: </strong>
+                        {this.state.released}
+                      </p>
+                    </Grid>
                   )}
-                </Grid>
 
-                <Grid item xs={12} sm={12} md={7} lg={6} xl={7}>
-                  <strong>Genres: </strong>
-                  {this.state.genres &&
-                    this.state.genres.map(genre => {
-                      return <p>{genre.name} </p>;
-                    })}
-                </Grid>
-                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                  <strong>Developers: </strong>
-                  {this.state.developers &&
-                    this.state.developers.map(dev => {
-                      return <p>{dev.name} </p>;
-                    })}
-                </Grid>
-                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                  <strong>Publishers: </strong>
-                  {this.state.publishers &&
-                    this.state.publishers.map(pub => {
-                      return <p>{pub.name} </p>;
-                    })}
-                </Grid>
-              </CardContent>
-            </Card>
+                  <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                    <strong>Genres: </strong>
+                    {this.state.genres &&
+                      this.state.genres.map(genre => {
+                        return <p>{genre.name} </p>;
+                      })}
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                    <strong>Developers: </strong>
+                    {this.state.developers &&
+                      this.state.developers.map(dev => {
+                        return <p>{dev.name} </p>;
+                      })}
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                    <strong>Publishers: </strong>
+                    {this.state.publishers &&
+                      this.state.publishers.map(pub => {
+                        return <p>{pub.name} </p>;
+                      })}
+                  </Grid>
+
+                  <Hidden smDown>
+                    <Grid
+                      item
+                      xs={12}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      style={{ marginTop: "10px" }}
+                    >
+                      {this.state.gameinfo && (
+                        <PlatformAvailable
+                          gameinfo={this.state.gameinfo}
+                        ></PlatformAvailable>
+                      )}
+                    </Grid>
+                  </Hidden>
+                </CardContent>
+              </Card>
+            </Grid>
           </Grid>
-
           <Hidden smUp>
             <Grid
               item
               align="center"
-              xs={4}
+              xs={3}
               sm={6}
               md={6}
               lg={6}
               xl={6}
-              style={{ marginBottom: "20px", marginLeft: "5px" }}
+              style={{ marginBottom: "5px", marginLeft: "15px" }}
             >
               {this.state.rating && <AgeRating ratingID={this.state.rating} />}
             </Grid>
           </Hidden>
-
+          <Hidden smUp>
+            <Grid item xs={10} sm={6}>
+              {this.state.gameinfo && (
+                <Card>
+                  <CardContent>
+                    <PlatformAvailable
+                      gameinfo={this.state.gameinfo}
+                    ></PlatformAvailable>
+                  </CardContent>
+                </Card>
+              )}
+            </Grid>
+          </Hidden>
           {this.state.movies ? (
             <Grid
               item
@@ -346,30 +375,36 @@ export class GameInfo extends Component {
               ""
             )}
           </Grid>
-
-          <Grid item xs={11} sm={5} md={5} lg={5} xl={5}>
-            <Card>
-              <CardContent>
-                {this.state.platforms_pc && this.state.platforms_pc.minimum}
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid
-            item
-            xs={11}
-            sm={5}
-            md={5}
-            lg={5}
-            xl={5}
-            style={{ marginBottom: "55px" }}
-          >
-            <Card>
-              <CardContent>
-                {this.state.platforms_pc && this.state.platforms_pc.recommended}
-              </CardContent>
-            </Card>
-          </Grid>
+          {this.state.platforms_pc.minimum && (
+            <Grid item xs={11} sm={11} md={11} lg={5} xl={5}>
+              <Card>
+                <CardContent
+                  dangerouslySetInnerHTML={{
+                    __html: this.state.platforms_pc.minimum
+                  }}
+                ></CardContent>
+              </Card>
+            </Grid>
+          )}
+          {this.state.platforms_pc.recommended && (
+            <Grid
+              item
+              xs={11}
+              sm={11}
+              md={11}
+              lg={5}
+              xl={5}
+              style={{ marginBottom: "55px" }}
+            >
+              <Card>
+                <CardContent
+                  dangerouslySetInnerHTML={{
+                    __html: this.state.platforms_pc.recommended
+                  }}
+                ></CardContent>
+              </Card>
+            </Grid>
+          )}
         </Grid>
       </MuiThemeProvider>
     );

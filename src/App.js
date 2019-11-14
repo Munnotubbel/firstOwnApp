@@ -6,21 +6,28 @@ import GoHome from "./GoHome";
 import Search from "./Search";
 import Grid from "@material-ui/core/Grid";
 import { NavLink } from "react-router-dom";
-
+import * as serviceWorker from "./serviceWorker";
 import GenreSelect from "./GenreSelect";
 import GameOverview from "./GameOverview";
 import { Route, HashRouter } from "react-router-dom";
-
 import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
-
+import Draggable from "react-draggable";
+import { DraggableCore } from "react-draggable";
 import { createStyles, withStyles } from "@material-ui/core/styles";
 import "./App.css";
 import { CircleArrow as ScrollUpButton } from "react-scroll-up-button";
+import * as firebase from "firebase";
+import { firebaseConfig } from "./firebaseConfig ";
+import SignIn from "./SignIn";
+import SignUp from "./SignUp";
+
+var firebaseapp = firebase.initializeApp(firebaseConfig);
+console.log(firebaseapp);
 
 const styles = createStyles(theme => ({
   button: {
@@ -56,7 +63,60 @@ class App extends Component {
     gameid: "",
     gamename: "",
     title: "Gamer's Pilot",
-    titleSize: 5
+    titleSize: 5,
+    logedin: false,
+    activeDrags: 0,
+    deltaPosition: {
+      x: 0,
+      y: 0
+    },
+    controlledPosition: {
+      x: -400,
+      y: 200
+    }
+  };
+
+  handleDrag = (e, ui) => {
+    const { x, y } = this.state.deltaPosition;
+    this.setState({
+      deltaPosition: {
+        x: x + ui.deltaX,
+        y: y + ui.deltaY
+      }
+    });
+  };
+
+  onStart = () => {
+    this.setState({ activeDrags: ++this.state.activeDrags });
+  };
+
+  onStop = () => {
+    this.setState({ activeDrags: --this.state.activeDrags });
+  };
+
+  adjustXPos = e => {
+    e.preventDefault();
+    e.stopPropagation();
+    const { x, y } = this.state.controlledPosition;
+    this.setState({ controlledPosition: { x: x - 10, y } });
+  };
+
+  adjustYPos = e => {
+    e.preventDefault();
+    e.stopPropagation();
+    const { controlledPosition } = this.state;
+    const { x, y } = controlledPosition;
+    this.setState({ controlledPosition: { x, y: y - 10 } });
+  };
+
+  onControlledDrag = (e, position) => {
+    const { x, y } = position;
+    this.setState({ controlledPosition: { x, y } });
+  };
+
+  onControlledDragStop = (e, position) => {
+    this.onControlledDrag(e, position);
+    this.onStop();
   };
 
   platformPicked = props => {
@@ -112,8 +172,20 @@ class App extends Component {
   GoHome() {
     return <PlatformSelect />;
   }
+
+  toggleClass = status => {
+    var dropBtnID = document.getElementById("lappen");
+   
+    if (dropBtnID.className === "") {
+   
+      dropBtnID.className = "active";
+    } else {
+      dropBtnID.className = "";
+    }
+  };
   render() {
-    const { classes } = this.props;
+    const dragHandlers = { onStart: this.onStart, onStop: this.onStop };
+    const { deltaPosition, controlledPosition } = this.state;
 
     return (
       <React.Fragment>
@@ -160,8 +232,32 @@ class App extends Component {
             <Route path="/genres" component={this.platformPicked} />
             <Route path="/games" component={this.genrePicked} />
             <Route path="/gameinfo" component={this.gamePicked} />
+            <Route path="/signin" component={SignIn} />
+            <Route path="/signup" component={SignUp} />
           </Grid>
+          <Draggable bounds="body" {...dragHandlers}>
+            <div className="buttonDrop">
+              <div className="button-top">
+                <ul id="lappen" onClick={() => this.toggleClass("active")}>
+                  {this.state.logedin === true ? (
+                    <li>Logout</li>
+                  ) : (
+                    <li>
+                      <NavLink to="/signin">Login</NavLink>
+                    </li>
+                  )}
+                  {this.state.logedin === true ? (
+                    <li>Account</li>
+                  ) : (
+                    <li style={{ display: "none" }}></li>
+                  )}
+                  <li></li>
+                </ul>
+              </div>
+            </div>
+          </Draggable>
         </HashRouter>
+
         <ScrollUpButton
           style={{ zIndex: "20" }}
           ToggledStyle={{ right: "83%" }}

@@ -49,8 +49,7 @@ class Search extends Component {
   };
 
   render() {
-    if (this.state.value) console.log(this.state.value);
-    if (this.state.dataSearch) console.log(this.state.dataSearch);
+    
 
     return (
       <Grid
