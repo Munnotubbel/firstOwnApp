@@ -3,7 +3,6 @@ import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
 import MediaSlider from "./MediaSlider";
 import PropTypes from "prop-types";
-import withWidth from "@material-ui/core/withWidth";
 
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
@@ -14,12 +13,21 @@ import "react-html5video/dist/styles.css";
 import AwesomeSlider from "react-awesome-slider";
 import "react-awesome-slider/dist/styles.css";
 import AwesomeSliderStyles from "react-awesome-slider/src/styled/cube-animation";
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import {
+  createMuiTheme,
+  MuiThemeProvider,
+  responsiveFontSizes
+} from "@material-ui/core/styles";
 
 import AgeRating from "./AgeRating";
 import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
 import PlatformAvailable from "./PlatformAvailable";
+import Comment from "./Comment";
+import { connect } from "react-redux";
+import { firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
+import PostComment from "./PostComment";
 
 const theme = createMuiTheme({
   breakpoints: {
@@ -52,7 +60,8 @@ export class GameInfo extends Component {
     screenshots: [],
     platforms_pc: [],
     plat: [],
-    allplat: []
+    allplat: [],
+    comments: []
   };
   async componentDidMount() {
     document.getElementById("searchContainer").style.display = "none";
@@ -65,6 +74,7 @@ export class GameInfo extends Component {
       .then(response =>
         this.setState(
           {
+            slug: response.slug,
             name: response.name,
             genres: response.genres,
             gameinfo: response,
@@ -76,7 +86,8 @@ export class GameInfo extends Component {
             stores: response.stores,
             platforms_pc: response.platforms[0].requirements
               ? response.platforms[0].requirements
-              : ""
+              : "",
+            comments: this.props.projects.projects
           },
           () => this.props.change(`${this.state.name}`)
         )
@@ -144,17 +155,18 @@ export class GameInfo extends Component {
     var rawMarkup = this.props.content;
     return { __html: rawMarkup };
   }
-  render() {
-    let requirements = null;
 
-    if (this.state.allplat) console.log(this.state.allplat);
-    if (this.state.gameinfo) console.log(this.state.gameinfo);
+  render() {
+    if (this.state.comments) console.log(this.state.comments);
+    if (this.state.slug) console.log(this.state.slug);
+    // if (this.state.allplat) console.log(this.state.allplat);
+    // if (this.state.gameinfo) console.log(this.state.gameinfo);
     // console.log(this.state.rating);
     // if (this.state) console.log(this.state);
     // if (this.state.platforms_pc)
     // console.log(this.state.platforms_pc.recommended);
     const bildurl = this.state.gameinfo.background_image;
-    const youtubeUrl = this.state.youtube.external_id;
+
     return (
       <MuiThemeProvider theme={theme}>
         <Grid //iiii start of
@@ -405,6 +417,38 @@ export class GameInfo extends Component {
               </Card>
             </Grid>
           )}
+          <Grid item xs={11} sm={11} md={11} lg={11} xl={11}>
+            <Grid
+              container
+              spacing={3}
+              justify="center"
+              alignItems="center"
+              style={{ width: "100%", marginTop: "20px", marginBottom: "80px" }}
+            >
+              {this.state.gameinfo && (
+                <Grid item xs={11} sm={11} md={11} lg={11} xl={11}>
+                  <PostComment
+                    gameid={this.state.gameinfo.id}
+                    slug={this.state.gameinfo.slug}
+                  ></PostComment>
+                </Grid>
+              )}
+              {this.state.comments && (
+                <Grid item xs={11} sm={11} md={11} lg={11} xl={11}>
+                  {this.state.comments.map(game => {
+                    const name = this.state.slug;
+                    return (
+                      <Card>
+                        {game[name] && (
+                          <Comment post={game[name].comment}></Comment>
+                        )}
+                      </Card>
+                    );
+                  })}
+                </Grid>
+              )}
+            </Grid>
+          </Grid>
         </Grid>
       </MuiThemeProvider>
     );
@@ -413,4 +457,13 @@ export class GameInfo extends Component {
 GameInfo.propTypes = {
   width: PropTypes.oneOf(["lg", "md", "sm", "xl", "xs"]).isRequired
 };
-export default withWidth()(GameInfo);
+const mapStateToProps = state => {
+  // console.log(state);
+  return { projects: state.firestore.ordered };
+};
+export default compose(
+  connect(mapStateToProps),
+  firestoreConnect([{ collection: "projects" }])
+)(GameInfo);
+
+// export default connect(mapStateToProps)(GameInfo);

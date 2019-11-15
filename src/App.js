@@ -21,22 +21,15 @@ import { DraggableCore } from "react-draggable";
 import { createStyles, withStyles } from "@material-ui/core/styles";
 import "./App.css";
 import { CircleArrow as ScrollUpButton } from "react-scroll-up-button";
-import * as firebase from "firebase";
-import { firebaseConfig } from "./firebaseConfig ";
+// import * as firebase from "firebase";
+// import  firebaseConfig  from "./firebaseConfig ";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
+import { connect } from "react-redux";
 
-var firebaseapp = firebase.initializeApp(firebaseConfig);
-console.log(firebaseapp);
+// var bla= firebase.initializeApp(firebaseConfig);
 
-const styles = createStyles(theme => ({
-  button: {
-    margin: theme.spacing(1)
-  },
-  input: {
-    display: "none"
-  }
-}));
+// console.log(bla)
 
 function ElevationScroll(props) {
   const { children, window } = props;
@@ -76,6 +69,7 @@ class App extends Component {
     }
   };
 
+  componentDidMount() {}
   handleDrag = (e, ui) => {
     const { x, y } = this.state.deltaPosition;
     this.setState({
@@ -175,15 +169,20 @@ class App extends Component {
 
   toggleClass = status => {
     var dropBtnID = document.getElementById("lappen");
-   
+
     if (dropBtnID.className === "") {
-   
       dropBtnID.className = "active";
     } else {
       dropBtnID.className = "";
     }
   };
+
+  detectRotate = () => {
+    window.addEventListener("orientationchange", function() {}, false);
+  };
   render() {
+    console.log(this.props);
+    const { projects } = this.props;
     const dragHandlers = { onStart: this.onStart, onStop: this.onStop };
     const { deltaPosition, controlledPosition } = this.state;
 
@@ -237,8 +236,12 @@ class App extends Component {
           </Grid>
           <Draggable bounds="body" {...dragHandlers}>
             <div className="buttonDrop">
-              <div className="button-top">
-                <ul id="lappen" onClick={() => this.toggleClass("active")}>
+              <div className="button-top" id="dragButton">
+                <ul
+                  id="lappen"
+                  onClick={() => this.toggleClass("active")}
+                  onLoad={this.detectRotate()}
+                >
                   {this.state.logedin === true ? (
                     <li>Logout</li>
                   ) : (
@@ -251,6 +254,7 @@ class App extends Component {
                   ) : (
                     <li style={{ display: "none" }}></li>
                   )}
+                  <li>frei</li>
                   <li></li>
                 </ul>
               </div>
@@ -268,5 +272,9 @@ class App extends Component {
     );
   }
 }
-
-export default withStyles(styles)(App);
+const mapStateToProps = state => {
+  return {
+    projects: state.projects.projects
+  };
+};
+export default connect(mapStateToProps)(App);

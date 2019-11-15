@@ -7,7 +7,8 @@ import Grid from "@material-ui/core/Grid";
 
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
-import {connect} from 'react-redux';
+
+
 const theme = createMuiTheme({
   breakpoints: {
     values: {
@@ -144,9 +145,5 @@ class PlatformSelect extends Component {
     );
   }
 }
-const mapStateToProps = (state) => {
-  return {
-    projects: state.projects.projects
-  }
-}
-export default connect(mapStateToProps)(PlatformSelect);
+
+export default PlatformSelect;

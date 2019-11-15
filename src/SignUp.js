@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 
+import {connect} from 'react-redux';
+import {createProject} from "./store/actions/projectActions"
+
 class SignIn extends Component {
   state = {
     email: "",
@@ -17,6 +20,7 @@ class SignIn extends Component {
   handleSubmit = e => {
     e.preventDefault();
     console.log(this.state);
+    this.props.createProject(this.state)
   };
   handleChange = e => {
      
@@ -58,5 +62,9 @@ class SignIn extends Component {
     );
   }
 }
-
-export default SignIn;
+const mapDispatchToProps =(dispatch) =>{
+    return {
+      createProject: (project) => dispatch (createProject(project))
+    }
+  }
+export default connect(null,mapDispatchToProps) (SignIn);

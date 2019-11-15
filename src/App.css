@@ -655,7 +655,7 @@ a:visited {
 }
 
 #lappen.active li:nth-child(3) {
-  -webkit-transform: translate(70px, 0px) rotate(360deg);
+  -webkit-transform: translate(-70px, 0px) rotate(360deg);
   -webkit-transition-delay: 0.02s;
 }
 

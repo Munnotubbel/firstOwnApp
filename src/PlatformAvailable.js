@@ -37,7 +37,7 @@ const PlatformAvailable = ({ gameinfo }) => {
       {parent_platforms &&
         parent_platforms.map(platform => {
           let name = platform.platform.name;
-          console.log("platform", platform);
+
           return (
             <Grid item align="center" xs={2} sm={2} md={2} lg={2} xl={2}>
               <img
