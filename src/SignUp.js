@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-
-import {connect} from 'react-redux';
-import {createProject} from "./store/actions/projectActions"
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { createProject } from "./store/actions/projectActions";
 
 class SignIn extends Component {
   state = {
     email: "",
     password: "",
-    firstName:"",
-    lastName:"",
+    firstName: "",
+    lastName: ""
   };
   componentDidMount() {
     document.getElementById("searchContainer").style.display = "none";
@@ -20,11 +20,10 @@ class SignIn extends Component {
   handleSubmit = e => {
     e.preventDefault();
     console.log(this.state);
-    this.props.createProject(this.state)
+    this.props.createProject(this.state);
   };
   handleChange = e => {
-     
-    this.setState ({
+    this.setState({
       [e.target.id]: e.target.value
     });
   };
@@ -37,7 +36,7 @@ class SignIn extends Component {
             <label htmlFor="email">Email</label>
             <input type="email" id="email" onChange={this.handleChange} />
           </div>
-          
+
           <div className="input-field">
             <label htmlFor="password">Password</label>
             <input type="password" id="password" onChange={this.handleChange} />
@@ -53,7 +52,6 @@ class SignIn extends Component {
             <input type="text" id="lastName" onChange={this.handleChange} />
           </div>
 
-          
           <div className="input-field">
             <button>Sign Up</button>
           </div>
@@ -62,9 +60,9 @@ class SignIn extends Component {
     );
   }
 }
-const mapDispatchToProps =(dispatch) =>{
-    return {
-      createProject: (project) => dispatch (createProject(project))
-    }
-  }
-export default connect(null,mapDispatchToProps) (SignIn);
+const mapDispatchToProps = dispatch => {
+  return {
+    createProject: project => dispatch(createProject(project))
+  };
+};
+export default withRouter(connect(null, mapDispatchToProps)(SignIn));

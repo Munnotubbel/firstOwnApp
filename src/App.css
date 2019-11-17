@@ -703,7 +703,7 @@ a:visited {
 } */
 
 #lappen li:last-child {
-  background-image: url('https://res.cloudinary.com/munnotubbel/image/upload/v1573760881/gamerspilot/userIcon_jsambb.png');
+  /* background-image: url('https://res.cloudinary.com/munnotubbel/image/upload/v1573760881/gamerspilot/userIcon_jsambb.png'); */
   background-position: center;
   -webkit-transition-delay: 0.1s;
   -webkit-transform: scale(1);
@@ -737,4 +737,11 @@ a:visited {
   margin-bottom: 10px;
   padding: 3px 5px;
   text-align: center;
+}
+
+.centerIMG {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 110%;
 }

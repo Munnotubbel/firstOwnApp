@@ -5,7 +5,7 @@ import GoBack from "./GoBack";
 import GoHome from "./GoHome";
 import Search from "./Search";
 import Grid from "@material-ui/core/Grid";
-import { NavLink } from "react-router-dom";
+
 import * as serviceWorker from "./serviceWorker";
 import GenreSelect from "./GenreSelect";
 import GameOverview from "./GameOverview";
@@ -21,15 +21,11 @@ import { DraggableCore } from "react-draggable";
 import { createStyles, withStyles } from "@material-ui/core/styles";
 import "./App.css";
 import { CircleArrow as ScrollUpButton } from "react-scroll-up-button";
-// import * as firebase from "firebase";
-// import  firebaseConfig  from "./firebaseConfig ";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
+import { signOut } from "./store/actions/authActions";
 import { connect } from "react-redux";
-
-// var bla= firebase.initializeApp(firebaseConfig);
-
-// console.log(bla)
+import LinkSwitch from "./LinkSwitch";
 
 function ElevationScroll(props) {
   const { children, window } = props;
@@ -57,7 +53,7 @@ class App extends Component {
     gamename: "",
     title: "Gamer's Pilot",
     titleSize: 5,
-    logedin: false,
+    logedin: true,
     activeDrags: 0,
     deltaPosition: {
       x: 0,
@@ -167,16 +163,6 @@ class App extends Component {
     return <PlatformSelect />;
   }
 
-  toggleClass = status => {
-    var dropBtnID = document.getElementById("lappen");
-
-    if (dropBtnID.className === "") {
-      dropBtnID.className = "active";
-    } else {
-      dropBtnID.className = "";
-    }
-  };
-
   detectRotate = () => {
     window.addEventListener("orientationchange", function() {}, false);
   };
@@ -237,26 +223,7 @@ class App extends Component {
           <Draggable bounds="body" {...dragHandlers}>
             <div className="buttonDrop">
               <div className="button-top" id="dragButton">
-                <ul
-                  id="lappen"
-                  onClick={() => this.toggleClass("active")}
-                  onLoad={this.detectRotate()}
-                >
-                  {this.state.logedin === true ? (
-                    <li>Logout</li>
-                  ) : (
-                    <li>
-                      <NavLink to="/signin">Login</NavLink>
-                    </li>
-                  )}
-                  {this.state.logedin === true ? (
-                    <li>Account</li>
-                  ) : (
-                    <li style={{ display: "none" }}></li>
-                  )}
-                  <li>frei</li>
-                  <li></li>
-                </ul>
+                <LinkSwitch></LinkSwitch>
               </div>
             </div>
           </Draggable>
@@ -272,9 +239,15 @@ class App extends Component {
     );
   }
 }
-const mapStateToProps = state => {
+
+const mapDispatchToProps = dispatch => {
   return {
-    projects: state.projects.projects
+    signOut: () => dispatch(signOut())
   };
 };
-export default connect(mapStateToProps)(App);
+
+const mapStateToProps = state => {
+  console.log(state);
+  return {};
+};
+export default connect(mapStateToProps, mapDispatchToProps)(App);

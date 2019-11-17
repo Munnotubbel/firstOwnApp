@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { createProject } from "./store/actions/projectActions";
-
+import { NavLink } from "react-router-dom";
 class PostComment extends Component {
   state = {
     title: "",
@@ -32,6 +32,8 @@ class PostComment extends Component {
     });
   };
   render() {
+    const { auth } = this.props;
+
     return (
       <div className="container" style={{ height: "100%", width: "100%" }}>
         <form onSubmit={this.handleSubmit} className="white">
@@ -56,7 +58,11 @@ class PostComment extends Component {
           </div>
 
           <div className="input-field">
-            <button>post comment</button>
+            {auth.uid ? (
+              <button>post comment</button>
+            ) : (
+              <NavLink to="/signin">signin to post comment</NavLink>
+            )}
           </div>
         </form>
       </div>
@@ -68,4 +74,13 @@ const mapDispatchToProps = dispatch => {
     createProject: project => dispatch(createProject(project))
   };
 };
-export default connect(null, mapDispatchToProps)(PostComment);
+
+const mapStateProps = state => {
+  console.log(state);
+  return {
+    auth: state.firebase.auth
+  };
+};
+export default withRouter(
+  connect(mapStateProps, mapDispatchToProps)(PostComment)
+);

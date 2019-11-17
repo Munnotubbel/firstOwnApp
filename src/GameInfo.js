@@ -157,14 +157,10 @@ export class GameInfo extends Component {
   }
 
   render() {
+    const { auth } = this.props;
     if (this.state.comments) console.log(this.state.comments);
     if (this.state.slug) console.log(this.state.slug);
-    // if (this.state.allplat) console.log(this.state.allplat);
-    // if (this.state.gameinfo) console.log(this.state.gameinfo);
-    // console.log(this.state.rating);
-    // if (this.state) console.log(this.state);
-    // if (this.state.platforms_pc)
-    // console.log(this.state.platforms_pc.recommended);
+
     const bildurl = this.state.gameinfo.background_image;
 
     return (
@@ -423,16 +419,21 @@ export class GameInfo extends Component {
               spacing={3}
               justify="center"
               alignItems="center"
-              style={{ width: "100%", marginTop: "20px", marginBottom: "80px" }}
+              style={{ width: "100%", marginTop: "20px", marginBottom: "40px" }}
             >
-              {this.state.gameinfo && (
+              {/* {auth.uid ? ( */}
+              <Grid item xs={11} sm={11} md={11} lg={11} xl={11}>
+                <PostComment
+                  gameid={this.state.gameinfo.id}
+                  slug={this.state.gameinfo.slug}
+                ></PostComment>
+              </Grid>
+              {/*   ) : (
                 <Grid item xs={11} sm={11} md={11} lg={11} xl={11}>
-                  <PostComment
-                    gameid={this.state.gameinfo.id}
-                    slug={this.state.gameinfo.slug}
-                  ></PostComment>
+                  <h4>pls login to post comments</h4>{" "}
                 </Grid>
-              )}
+                ) */}
+              }
               {this.state.comments && (
                 <Grid item xs={11} sm={11} md={11} lg={11} xl={11}>
                   {this.state.comments.map(game => {
@@ -458,8 +459,11 @@ GameInfo.propTypes = {
   width: PropTypes.oneOf(["lg", "md", "sm", "xl", "xs"]).isRequired
 };
 const mapStateToProps = state => {
-  // console.log(state);
-  return { projects: state.firestore.ordered };
+  console.log(state);
+  return {
+    projects: state.firestore.ordered,
+    auth: state.firebase.auth
+  };
 };
 export default compose(
   connect(mapStateToProps),
