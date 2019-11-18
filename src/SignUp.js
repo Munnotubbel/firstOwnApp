@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { createProject } from "./store/actions/projectActions";
-
+import { signUp } from "./store/actions/authActions";
 class SignIn extends Component {
   state = {
     email: "",
@@ -19,8 +19,7 @@ class SignIn extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    console.log(this.state);
-    this.props.createProject(this.state);
+    this.props.signUp(this.state);
   };
   handleChange = e => {
     this.setState({
@@ -28,6 +27,13 @@ class SignIn extends Component {
     });
   };
   render() {
+    const { history } = this.props;
+    const { auth, authError } = this.props;
+    console.log(this.props);
+    if (auth.uid) {
+      history.goBack();
+    }
+
     return (
       <div className="container" style={{ height: "100%", width: "100%" }}>
         <form onSubmit={this.handleSubmit} className="white">
@@ -56,13 +62,20 @@ class SignIn extends Component {
             <button>Sign Up</button>
           </div>
         </form>
+        {authError ? <h4>{authError}</h4> : null}
       </div>
     );
   }
 }
 const mapDispatchToProps = dispatch => {
   return {
-    createProject: project => dispatch(createProject(project))
+    signUp: newUser => dispatch(signUp(newUser))
   };
 };
-export default withRouter(connect(null, mapDispatchToProps)(SignIn));
+const mapStateProps = state => {
+  return {
+    auth: state.firebase.auth,
+    authError: state.auth.authError
+  };
+};
+export default withRouter(connect(mapStateProps, mapDispatchToProps)(SignIn));
