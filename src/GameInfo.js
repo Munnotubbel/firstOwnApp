@@ -3,9 +3,9 @@ import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
 import MediaSlider from "./MediaSlider";
 import PropTypes from "prop-types";
-
+import Rating from "react-rating";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-
+import StarRating from "./StarRating";
 import "./App.css";
 import PricePicker from "./PricePicker";
 import { DefaultPlayer as Video } from "react-html5video";
@@ -86,8 +86,7 @@ export class GameInfo extends Component {
             stores: response.stores,
             platforms_pc: response.platforms[0].requirements
               ? response.platforms[0].requirements
-              : "",
-            comments: this.props.projects.projects
+              : ""
           },
           () => this.props.change(`${this.state.name}`)
         )
@@ -157,7 +156,8 @@ export class GameInfo extends Component {
   }
 
   render() {
-    const { auth } = this.props;
+    const { auth, projects } = this.props;
+    console.log(this.props);
     if (this.state.comments) console.log(this.state.comments);
     if (this.state.slug) console.log(this.state.slug);
 
@@ -165,7 +165,7 @@ export class GameInfo extends Component {
 
     return (
       <MuiThemeProvider theme={theme}>
-        <Grid //iiii start of
+        <Grid
           container
           spacing={3}
           justify="center"
@@ -185,6 +185,8 @@ export class GameInfo extends Component {
             <Grid container spacing={3}>
               <Card>
                 <CardContent>
+                  <StarRating></StarRating>
+
                   {this.state.released && (
                     <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                       <p>
@@ -421,28 +423,23 @@ export class GameInfo extends Component {
               alignItems="center"
               style={{ width: "100%", marginTop: "20px", marginBottom: "40px" }}
             >
-              {/* {auth.uid ? ( */}
               <Grid item xs={11} sm={11} md={11} lg={11} xl={11}>
                 <PostComment
                   gameid={this.state.gameinfo.id}
                   slug={this.state.gameinfo.slug}
                 ></PostComment>
               </Grid>
-              {/*   ) : (
+
+              {projects.projects && (
                 <Grid item xs={11} sm={11} md={11} lg={11} xl={11}>
-                  <h4>pls login to post comments</h4>{" "}
-                </Grid>
-                ) */}
-              }
-              {this.state.comments && (
-                <Grid item xs={11} sm={11} md={11} lg={11} xl={11}>
-                  {this.state.comments.map(game => {
+                  {projects.projects.map(game => {
                     const name = this.state.slug;
+
                     return (
                       <Card>
-                        {game[name] && (
-                          <Comment post={game[name].comment}></Comment>
-                        )}
+                        {game.slug === name ? (
+                          <Comment post={game}></Comment>
+                        ) : null}
                       </Card>
                     );
                   })}
@@ -465,9 +462,14 @@ const mapStateToProps = state => {
     auth: state.firebase.auth
   };
 };
+// export default compose(connect(mapStateToProps)(GameInfo));
+//   firestoreConnect([{ collection: "projects" }]),
+//   connect(state => console.log("state", state))
+// )
 export default compose(
   connect(mapStateToProps),
-  firestoreConnect([{ collection: "projects" }])
+  firestoreConnect([
+    { collection: "projects", orderBy: ["createdAt", "desc"] },
+    { collection: "users" }
+  ])
 )(GameInfo);
-
-// export default connect(mapStateToProps)(GameInfo);

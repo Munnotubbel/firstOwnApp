@@ -39,13 +39,21 @@ export const signUp = newUser => {
           .collection("users")
           .doc(resp.user.uid)
           .set({
+            displayName: newUser.displayName,
             firstName: newUser.firstName,
             lastName: newUser.lastName,
-            initials: newUser.firstName[0] + newUser.lastName[0]
+            initials: newUser.firstName[0] + newUser.lastName[0],
+            avatar: newUser.avatar
           });
       })
       .then(() => {
         dispatch({ type: "SIGNUP_SUCCESS" });
+      })
+      .then(success => {
+        console.log(success);
+        success.updateProfile({
+          displayName: newUser.displayName
+        });
       })
       .catch(err => {
         dispatch({ type: "SIGNUP_ERROR", err });

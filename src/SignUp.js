@@ -8,7 +8,9 @@ class SignIn extends Component {
     email: "",
     password: "",
     firstName: "",
-    lastName: ""
+    lastName: "",
+    displayName: "",
+    avatar: ""
   };
   componentDidMount() {
     document.getElementById("searchContainer").style.display = "none";
@@ -38,6 +40,17 @@ class SignIn extends Component {
       <div className="container" style={{ height: "100%", width: "100%" }}>
         <form onSubmit={this.handleSubmit} className="white">
           <h5>Sign In</h5>
+
+          <div className="input-field">
+            <label htmlFor="displayName">Nickname</label>
+            <input type="text" id="displayName" onChange={this.handleChange} />
+          </div>
+
+          <div className="input-field">
+            <label htmlFor="avatar">Avatar</label>
+            <input type="url" id="avatar" onChange={this.handleChange} />
+          </div>
+
           <div className="input-field">
             <label htmlFor="email">Email</label>
             <input type="email" id="email" onChange={this.handleChange} />

@@ -4,10 +4,7 @@ import { NavLink } from "react-router-dom";
 
 import Grid from "@material-ui/core/Grid";
 
-
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-
-
 
 const theme = createMuiTheme({
   breakpoints: {
@@ -117,7 +114,6 @@ class PlatformSelect extends Component {
   };
 
   render() {
-    
     return (
       <MuiThemeProvider theme={theme}>
         <Grid container direction="row" justify="center" alignItems="center">

@@ -3,11 +3,12 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { createProject } from "./store/actions/projectActions";
 import { NavLink } from "react-router-dom";
+import Grid from "@material-ui/core/Grid";
+
 class PostComment extends Component {
   state = {
     title: "",
     content: "",
-    username: "",
     gameid: "",
     slug: "",
     purpose: "comment"
@@ -29,31 +30,41 @@ class PostComment extends Component {
       [e.target.id]: e.target.value,
       gameid: this.props.gameid,
       slug: this.props.slug
+      // username: this.props.auth.
     });
   };
   render() {
-    const { auth } = this.props;
+    console.log(this.props);
+
+    const { auth, profile } = this.props;
 
     return (
       <div className="container" style={{ height: "100%", width: "100%" }}>
         <form onSubmit={this.handleSubmit} className="white">
           <h5>Post a Comment</h5>
-          <div className="input-field">
+          {/* <div className="input-field">
             <label htmlFor="username">Username</label>
             <input type="text" id="username" onChange={this.handleChange} />
-          </div>
+          </div> */}
           <div className="input-field">
             <label htmlFor="title">Title</label>
-            <input type="text" id="title" onChange={this.handleChange} />
+            <input
+              className="titleInput"
+              type="text"
+              id="title"
+              onChange={this.handleChange}
+              required
+            />
           </div>
 
           <div className="input-field">
             <label htmlFor="content">Content</label>
             <input
+              className="contentInput"
               type="text"
               id="content"
               onChange={this.handleChange}
-              style={{ width: "250px", height: "100px" }}
+              required
             />
           </div>
 
@@ -78,7 +89,8 @@ const mapDispatchToProps = dispatch => {
 const mapStateProps = state => {
   console.log(state);
   return {
-    auth: state.firebase.auth
+    auth: state.firebase.auth,
+    profile: state.firebase.profile
   };
 };
 export default withRouter(

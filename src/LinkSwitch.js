@@ -1,12 +1,13 @@
 import React from "react";
-
+import Avatar from "@material-ui/core/Avatar";
 import { connect } from "react-redux";
 import { signOut } from "./store/actions/authActions";
 import { NavLink } from "react-router-dom";
 
 const LinkSwitch = props => {
-  const { auth } = props;
-  console.log(auth);
+  const { auth, profile } = props;
+
+  console.log(props);
   function toggleClass(status) {
     var dropBtnID = document.getElementById("lappen");
 
@@ -31,11 +32,14 @@ const LinkSwitch = props => {
 
       {/* <li style={{ background: "red" }}>frei</li> */}
       {auth.uid ? (
-        <li style={{ background: "green" }}>
-          <img
-            className="centerIMG"
-            src="https://res.cloudinary.com/munnotubbel/image/upload/v1573760881/gamerspilot/userIcon_jsambb.png"
-          />
+        <li justify="center" alignItems="center">
+          {profile.avatar ? (
+            <Avatar className="centerIMG" alt="avatar" src={profile.avatar} />
+          ) : (
+            <Avatar style={{ background: "green", color: "white" }}>
+              {profile.initials}
+            </Avatar>
+          )}
         </li>
       ) : (
         <li style={{ background: "red" }}>
@@ -57,6 +61,9 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
   console.log(state);
-  return { auth: state.firebase.auth };
+  return {
+    auth: state.firebase.auth,
+    profile: state.firebase.profile
+  };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(LinkSwitch);

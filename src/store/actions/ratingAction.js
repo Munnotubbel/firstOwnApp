@@ -1,4 +1,4 @@
-export const createProject = project => {
+export const createRating = rating => {
   return (dispatch, getState, { getFirestore, getFirebase }) => {
     console.log(project);
     const profile = getState().firebase.profile;
@@ -6,13 +6,12 @@ export const createProject = project => {
 
     // make async call to database
     const firestore = getFirestore();
-    const gamename = project.slug;
-    const purpose = project.purpose;
+
     firestore
-      .collection("projects")
+      .collection("ratings")
       // .doc(gamename)
       .add({
-        ...project,
+        ...rating,
         authorFirstName: profile.firstName,
         authorLastName: profile.lastName,
         authorID: authorID,
@@ -21,10 +20,10 @@ export const createProject = project => {
       })
 
       .then(() => {
-        dispatch({ type: "CREATE_PROJECT", project });
+        dispatch({ type: "CREATE_RATING", project });
       })
       .catch(err => {
-        dispatch({ type: "CREATE_PROJECT_ERROR", err });
+        dispatch({ type: "CREATE_RATING_ERROR", err });
       });
   };
 };

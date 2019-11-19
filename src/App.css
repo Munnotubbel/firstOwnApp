@@ -669,8 +669,8 @@ a:visited {
   height: 40px;
   width: 40px;
   position: absolute;
-  left: 4.5px;
-  top: 4.5px;
+  left: 5px;
+  top: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -744,4 +744,13 @@ a:visited {
   margin-left: auto;
   margin-right: auto;
   width: 110%;
+}
+
+.titleInput {
+  width: 40%;
+}
+
+.contentInput {
+  width: 100%;
+  height: 20vh;
 }
