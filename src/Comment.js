@@ -11,6 +11,7 @@ import Avatar from "@material-ui/core/Avatar";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
+import Box from "@material-ui/core/Box";
 
 const Comment = props => {
   const { slug, users } = props;
@@ -26,17 +27,24 @@ const Comment = props => {
           .map(comment => {
             var authorID = comment.authorID;
             return (
-              <Grid>
+              <Grid container>
                 {comment.title !== null ? (
                   <Card>
                     <CardContent>
                       <Grid container>
-                        <Typography component="h3" gutterBottom>
-                          {moment(comment.createdAt.toDate()).calendar()}
-                        </Typography>
-                        <Typography variant="h6" component="h6" gutterBottom>
-                          {comment.title}
-                        </Typography>
+                        <Grid item xs={10} sm={10} md={10} lg={10} xl={10}>
+                          <Typography variant="h6">{comment.title}</Typography>
+                          <Box>
+                            <Typography variant="caption">
+                              {comment.username}
+                            </Typography>
+                          </Box>
+                          <Box>
+                            <Typography variant="caption">
+                              {moment(comment.createdAt.toDate()).calendar()}
+                            </Typography>
+                          </Box>
+                        </Grid>
 
                         <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
                           {users[authorID].avatar ? (
@@ -55,16 +63,10 @@ const Comment = props => {
                         </Grid>
 
                         <Grid item xs={10} sm={10} md={10} lg={10} xl={10}>
-                          <Typography>{comment.username}</Typography>
+                          <Typography variant="body1" component="div">
+                            {comment.content}
+                          </Typography>
                         </Grid>
-
-                        <Typography
-                          variant="body2"
-                          component="div"
-                          style={{ display: "" }}
-                        >
-                          {comment.content}
-                        </Typography>
                       </Grid>
                     </CardContent>
                   </Card>
