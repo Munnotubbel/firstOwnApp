@@ -31,6 +31,19 @@ const authReducer = (state = initState, action) => {
         ...state,
         authError: action.err.message
       };
+    case "UPDATE_SUCCESS":
+      console.log("rating completed");
+      return {
+        ...state,
+        authError: null
+      };
+    case "UPDATE_ERROR":
+      console.log("rating error");
+      return {
+        ...state,
+        authError: action.err.message
+      };
+
     default:
       return state;
   }

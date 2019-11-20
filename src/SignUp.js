@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { createProject } from "./store/actions/projectActions";
 import { signUp } from "./store/actions/authActions";
 class SignIn extends Component {
   state = {

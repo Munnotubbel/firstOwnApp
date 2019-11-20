@@ -7,7 +7,6 @@ import { NavLink } from "react-router-dom";
 const LinkSwitch = props => {
   const { auth, profile } = props;
 
-  console.log(props);
   function toggleClass(status) {
     var dropBtnID = document.getElementById("lappen");
 
@@ -60,7 +59,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 const mapStateToProps = state => {
-  console.log(state);
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile

@@ -26,7 +26,7 @@ import SignUp from "./SignUp";
 import { signOut } from "./store/actions/authActions";
 import { connect } from "react-redux";
 import LinkSwitch from "./LinkSwitch";
-
+import { getProject } from "./store/actions/projectActions";
 function ElevationScroll(props) {
   const { children, window } = props;
   const trigger = useScrollTrigger({
@@ -48,6 +48,7 @@ ElevationScroll.propTypes = {
 class App extends Component {
   state = {
     platform: "",
+    slugName: "",
     genre: "",
     gameid: "",
     gamename: "",
@@ -65,7 +66,6 @@ class App extends Component {
     }
   };
 
-  componentDidMount() {}
   handleDrag = (e, ui) => {
     const { x, y } = this.state.deltaPosition;
     this.setState({
@@ -140,6 +140,7 @@ class App extends Component {
       console.log(props.location.gameinfo);
       console.log(props.location.gamename);
       this.state.gameid = props.location.gameinfo;
+
       this.state.gamename = props.location.gamename;
     }
 
@@ -167,7 +168,6 @@ class App extends Component {
     window.addEventListener("orientationchange", function() {}, false);
   };
   render() {
-    console.log(this.props);
     const { projects } = this.props;
     const dragHandlers = { onStart: this.onStart, onStop: this.onStop };
     const { deltaPosition, controlledPosition } = this.state;
@@ -247,7 +247,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 const mapStateToProps = state => {
-  console.log(state);
   return {};
 };
 export default connect(mapStateToProps, mapDispatchToProps)(App);

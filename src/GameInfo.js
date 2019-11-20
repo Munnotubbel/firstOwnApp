@@ -28,6 +28,7 @@ import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import PostComment from "./PostComment";
+import { createRatingEntry } from "./store/actions/ratingAction";
 
 const theme = createMuiTheme({
   breakpoints: {
@@ -43,6 +44,7 @@ const theme = createMuiTheme({
 
 export class GameInfo extends Component {
   state = {
+    slug: "",
     name: "",
     gameinfo: [],
     twitch: [],
@@ -65,6 +67,7 @@ export class GameInfo extends Component {
   };
   async componentDidMount() {
     document.getElementById("searchContainer").style.display = "none";
+
     var gameid = this.props.gameid;
 
     console.log("Game loaded! id: " + this.props.gameid);
@@ -156,10 +159,17 @@ export class GameInfo extends Component {
   }
 
   render() {
-    const { auth, projects } = this.props;
     console.log(this.props);
-    if (this.state.comments) console.log(this.state.comments);
-    if (this.state.slug) console.log(this.state.slug);
+    if (
+      this.state.slug &&
+      typeof this.props.gameDB[this.state.slug] == "undefined"
+    ) {
+      this.props.createRatingEntry({ slug: this.state.slug });
+    }
+    const { auth } = this.props;
+
+    // if (this.state.comments) console.log(this.state.comments);
+    // if (this.state.slug) console.log(this.state.slug);
 
     const bildurl = this.state.gameinfo.background_image;
 
@@ -185,8 +195,6 @@ export class GameInfo extends Component {
             <Grid container spacing={3}>
               <Card>
                 <CardContent>
-                  <StarRating></StarRating>
-
                   {this.state.released && (
                     <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                       <p>
@@ -297,6 +305,12 @@ export class GameInfo extends Component {
             ""
           )}
 
+          {this.state.slug && (
+            <StarRating
+              gameid={this.state.gameinfo.id}
+              slug={this.state.slug}
+            ></StarRating>
+          )}
           <Grid
             item
             align="center"
@@ -341,7 +355,7 @@ export class GameInfo extends Component {
                       ></img>
                       <a id={"link" + storeID} href={url}>
                         {buy.store.name}&nbsp;
-                        <PricePicker storeID={storeID} url={url} />
+                        {/* <PricePicker storeID={storeID} url={url} /> */}
                       </a>
                     </li>
                   );
@@ -430,21 +444,7 @@ export class GameInfo extends Component {
                 ></PostComment>
               </Grid>
 
-              {projects.projects && (
-                <Grid item xs={11} sm={11} md={11} lg={11} xl={11}>
-                  {projects.projects.map(game => {
-                    const name = this.state.slug;
-
-                    return (
-                      <Card>
-                        {game.slug === name ? (
-                          <Comment post={game}></Comment>
-                        ) : null}
-                      </Card>
-                    );
-                  })}
-                </Grid>
-              )}
+              {this.state.slug && <Comment slug={this.state.slug}></Comment>}
             </Grid>
           </Grid>
         </Grid>
@@ -455,21 +455,25 @@ export class GameInfo extends Component {
 GameInfo.propTypes = {
   width: PropTypes.oneOf(["lg", "md", "sm", "xl", "xs"]).isRequired
 };
-const mapStateToProps = state => {
-  console.log(state);
+const mapStateProps = state => {
   return {
-    projects: state.firestore.ordered,
+    gameDB: state.firestore.data.projects,
     auth: state.firebase.auth
   };
 };
-// export default compose(connect(mapStateToProps)(GameInfo));
-//   firestoreConnect([{ collection: "projects" }]),
-//   connect(state => console.log("state", state))
-// )
+
+const mapDispatchToProps = dispatch => {
+  return {
+    createRatingEntry: rating => dispatch(createRatingEntry(rating))
+  };
+};
 export default compose(
-  connect(mapStateToProps),
+  connect(mapStateProps, mapDispatchToProps),
   firestoreConnect([
-    { collection: "projects", orderBy: ["createdAt", "desc"] },
+    {
+      collection: "projects"
+      // , orderBy: ["createdAt", "desc"]
+    },
     { collection: "users" }
   ])
 )(GameInfo);

@@ -8,12 +8,15 @@ const projectReducer = (state = initState, action) => {
     case "CREATE_PROJECT_ERROR":
       console.log("create project error", action.err);
       return state;
-    /*  case "GET_COMMENTS":
-      console.log("get comments - done", action.payload);
+
+    case "GET_PROJECT":
+      console.log("get project", action.project);
       return state;
-    case "GET_ERROR":
-      console.log("get comments error accured", action.payload);
-      return state; */
+
+    case "GET_PROJECT_ERROR":
+      console.log("get project error", action.err);
+      return state;
+
     default:
       return state;
   }

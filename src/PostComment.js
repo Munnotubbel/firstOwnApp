@@ -34,8 +34,6 @@ class PostComment extends Component {
     });
   };
   render() {
-    console.log(this.props);
-
     const { auth, profile } = this.props;
 
     return (
@@ -87,7 +85,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 const mapStateProps = state => {
-  console.log(state);
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile

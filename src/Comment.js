@@ -8,41 +8,94 @@ import Typography from "@material-ui/core/Typography";
 import moment from "moment";
 import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
+import { connect } from "react-redux";
+import { firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
 
-const Comment = ({ post }) => {
-  console.log(post);
+const Comment = props => {
+  const { slug, users } = props;
 
+  console.log(props);
+  console.log(props.gameDB[slug]);
   return (
-    <CardContent>
+    <Grid item xs={11} sm={11} md={11} lg={11} xl={11}>
       <Grid container>
-        <Typography component="h3" gutterBottom>
-          {moment(post.createdAt.toDate()).calendar()}
-        </Typography>
-        <Typography variant="h6" component="h6" gutterBottom>
-          {post.title}
-        </Typography>
-        {/*  <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-          <p></p>
-        </Grid> */}
-        {/*  <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
-          {profile.avatar ? (
-            <Avatar className="centerIMG" alt="avatar" src={profile.avatar} />
-          ) : (
-            <Avatar style={{ background: "green", color: "white" }}>
-              {profile.initials}
-            </Avatar>
-          )}
-        </Grid> */}
+        {props.gameDB[slug].comments
+          .slice(0)
+          .reverse()
+          .map(comment => {
+            var authorID = comment.authorID;
+            return (
+              <Grid>
+                {comment.title !== null ? (
+                  <Card>
+                    <CardContent>
+                      <Grid container>
+                        <Typography component="h3" gutterBottom>
+                          {moment(comment.createdAt.toDate()).calendar()}
+                        </Typography>
+                        <Typography variant="h6" component="h6" gutterBottom>
+                          {comment.title}
+                        </Typography>
 
-        <Grid item xs={10} sm={10} md={10} lg={10} xl={10}>
-          <Typography>{post.username}</Typography>
-        </Grid>
+                        <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
+                          {users[authorID].avatar ? (
+                            <Avatar
+                              className="centerIMG"
+                              alt="avatar"
+                              src={users[authorID].avatar}
+                            />
+                          ) : (
+                            <Avatar
+                              style={{ background: "green", color: "white" }}
+                            >
+                              {users[authorID].initials}
+                            </Avatar>
+                          )}
+                        </Grid>
 
-        <Typography variant="body2" component="div" style={{ display: "" }}>
-          {post.content}
-        </Typography>
+                        <Grid item xs={10} sm={10} md={10} lg={10} xl={10}>
+                          <Typography>{comment.username}</Typography>
+                        </Grid>
+
+                        <Typography
+                          variant="body2"
+                          component="div"
+                          style={{ display: "" }}
+                        >
+                          {comment.content}
+                        </Typography>
+                      </Grid>
+                    </CardContent>
+                  </Card>
+                ) : null}
+              </Grid>
+            );
+          })}
       </Grid>
-    </CardContent>
+    </Grid>
   );
 };
-export default Comment;
+const mapStateProps = state => {
+  const gta = "grand-theft-auto-iii";
+  // console.log(state.firestore.data.projects[gta]);
+  // console.log(state);
+
+  return {
+    users: state.firestore.data.users,
+    gameDB: state.firestore.data.projects
+  };
+};
+
+export default connect(mapStateProps, null)(Comment);
+
+/* export default compose(
+  connect(mapStateToProps, null),
+  firestoreConnect([
+    {
+      collection: "projects"
+      // , orderBy: ["createdAt", "desc"]
+    },
+    { collection: "users" }
+  ])
+)(Comment); */

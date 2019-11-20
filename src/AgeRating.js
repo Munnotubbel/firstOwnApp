@@ -2,7 +2,7 @@ import React from "react";
 let ratingUrl = "";
 const AgeRating = ratingID => {
   const rating = ratingID.ratingID;
-  console.log("rating", rating);
+
   switch (rating) {
     case 0:
       ratingUrl =

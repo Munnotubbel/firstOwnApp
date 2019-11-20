@@ -11,7 +11,7 @@ import thunk from "redux-thunk";
 import { reduxFirestore, getFirestore } from "redux-firestore";
 import { reactReduxFirebase, getFirebase } from "react-redux-firebase";
 import firebaseConfig from "./config/firebaseConfig";
-console.log(firebase);
+
 const store = createStore(
   rootReducer,
   compose(
