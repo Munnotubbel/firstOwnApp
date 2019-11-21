@@ -20,12 +20,12 @@ const store = createStore(
     reactReduxFirebase(firebaseConfig, {
       useFirestoreForProfile: true,
       userProfile: "users",
-      attachAuthIsReady: true
+      
     })
   )
 );
 
-store.firebaseAuthIsReady.then(() => {
+store.firebase.then(() => {
   ReactDOM.render(
     <Provider store={store}>
       <App />
