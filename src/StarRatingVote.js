@@ -85,7 +85,7 @@ class StarRatingVote extends Component {
             name="hover-side"
             value={this.state.value}
             precision={0.5}
-            onChangeActive={(event, newHover) => {
+            onClick={(event, newHover) => {
               this.handleChange(newHover);
             }}
           />
