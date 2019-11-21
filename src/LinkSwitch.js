@@ -27,7 +27,21 @@ const LinkSwitch = props => {
           <NavLink to="/signin">Login</NavLink>
         </li>
       )}
-      {auth.uid ? <li>Account</li> : <li style={{ display: "none" }}></li>}
+      {auth.uid ? (
+        <li>
+          <NavLink
+            to={{
+              pathname: "/profilepage",
+              profileID: `${props.auth.uid}`
+            }}
+          >
+            {" "}
+            Account
+          </NavLink>
+        </li>
+      ) : (
+        <li style={{ display: "none" }}></li>
+      )}
 
       {/* <li style={{ background: "red" }}>frei</li> */}
       {auth.uid ? (

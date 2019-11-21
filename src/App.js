@@ -27,6 +27,7 @@ import { signOut } from "./store/actions/authActions";
 import { connect } from "react-redux";
 import LinkSwitch from "./LinkSwitch";
 import { getProject } from "./store/actions/projectActions";
+import ProfilePage from "./ProfilePage";
 function ElevationScroll(props) {
   const { children, window } = props;
   const trigger = useScrollTrigger({
@@ -63,7 +64,8 @@ class App extends Component {
     controlledPosition: {
       x: -400,
       y: 200
-    }
+    },
+    lastProfile: ""
   };
 
   handleDrag = (e, ui) => {
@@ -147,6 +149,18 @@ class App extends Component {
     return <GameInfo change={this.updateTitle} gameid={this.state.gameid} />;
   };
 
+  showProfile = props => {
+    if (props.location.profileID) {
+      this.state.lastProfile = props.location.profileID;
+    }
+    return (
+      <ProfilePage
+        change={this.updateTitle}
+        profileID={this.state.lastProfile}
+      />
+    );
+  };
+
   updateTitle = title => {
     if (title === "Gamer's Pilot") {
       this.setState(
@@ -219,6 +233,7 @@ class App extends Component {
             <Route path="/gameinfo" component={this.gamePicked} />
             <Route path="/signin" component={SignIn} />
             <Route path="/signup" component={SignUp} />
+            <Route path="/profilepage" component={this.showProfile} />
           </Grid>
           <Draggable bounds="body" {...dragHandlers}>
             <div className="buttonDrop">

@@ -10,8 +10,9 @@ import Tooltip from "@material-ui/core/Tooltip";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import { createRating, createRatingEntry } from "./store/actions/ratingAction";
-
-// import { updateUser } from "./store/actions/authAction";
+import StarRatingCommunity from "./StarRatingCommunity";
+import StarRatingVote from "./StarRatingVote";
+import { NavLink } from "react-router-dom";
 
 const labels = {
   0.5: "HELL NO!",
@@ -57,88 +58,93 @@ class StarRating extends Component {
   };
   render() {
     const { slug, uid } = this.props;
+    const actualLabel = 2;
+    if (this.props.gameDB[slug]) {
+      const { ratings } = this.props.gameDB[slug];
+      if (this.props.gameDB[slug].ratings) {
+        if (typeof uid !== "undefined") {
+          return (
+            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+              {ratings && (
+                <Grid
+                  container
+                  direction="row"
+                  justify="center"
+                  alignItems="center"
+                >
+                  <StarRatingCommunity slug={slug} />
 
-    const communityValue = 3;
-    /*  this.roundHalf(
-                        this.props.gameDB[slug].ratings.rate /
-                          this.props.gameDB[slug].ratings.counter */
-    console.log(this.props);
-    const actualLabel = labels[this.roundHalf(this.state.value)];
-
-    return (
-      <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-        <Grid container direction="row" justify="center" alignItems="center">
-          <Grid
-            item
-            xs={3}
-            sm={3}
-            md={3}
-            lg={3}
-            xl={3}
-            component="fieldset"
-            mb={3}
-            borderColor="transparent"
-            style={{ border: 0 }}
-          >
-            <Typography component="legend">Comunity Rating</Typography>
-
+                  {ratings.usersVoted.includes(this.props.uid) === false &&
+                  this.props.uid != null ? (
+                    <StarRatingVote slug={slug} />
+                  ) : (
+                    <h4>you allready voted for this game</h4>
+                  )}
+                </Grid>
+              )}
+            </Grid>
+          );
+        } else {
+          return (
+            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+              {ratings && (
+                <Grid
+                  container
+                  direction="row"
+                  justify="center"
+                  alignItems="center"
+                >
+                  <StarRatingCommunity slug={slug} />
+                  <h4>you allready voted for this game</h4>}
+                </Grid>
+              )}
+            </Grid>
+          );
+        }
+      } else if (typeof this.props.uid !== "undefined") {
+        return (
+          <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
             <Grid
-              style={{
-                width: "200px",
-                display: "flex",
-                alignItems: "center"
-              }}
+              container
+              direction="row"
+              justify="center"
+              alignItems="center"
             >
-              <Rating
-                size="large"
-                readOnly
-                name="hover-side"
-                value={communityValue}
-                precision={0.5}
-              />
-              <Grid ml={2}>{labels[communityValue]}</Grid>
+              <Grid item xs={10} sm={10} md={10} lg={10} xl={10}>
+                <h4>nobody voted yet</h4>
+              </Grid>
+              <StarRatingVote slug={slug} />
             </Grid>
           </Grid>
-
-          {/*  {this.props.gameDB[slug].ratings.usersVoted.includes(
-            this.props.uid
-          ) === false && this.props.uid != null ? ( */}
-          <Grid
-            item
-            xs={3}
-            sm={3}
-            md={3}
-            lg={3}
-            xl={3}
-            style={{ border: 0 }}
-            component="fieldset"
-            mb={3}
-            borderColor="transparent"
-          >
-            <Typography component="legend">Your Rating</Typography>
-            <Grid
-              style={{
-                width: "200px",
-                display: "flex",
-                alignItems: "center"
-              }}
-            >
-              <Rating
-                size="small"
-                name="hover-side"
-                value={this.state.value}
-                precision={0.5}
-                onChangeActive={(event, newHover) => {
-                  this.handleChange(newHover);
-                }}
-              />
-              <Grid ml={2}>{actualLabel}</Grid>
+        );
+      } else {
+        return (
+          <h4>
+            <NavLink to="/signin">login to vote</NavLink>
+          </h4>
+        );
+      }
+    } else if (typeof this.props.uid !== "undefined") {
+      return (
+        <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+          <Grid container direction="row" justify="center" alignItems="center">
+            <Grid item xs={12} sm={12} md={12} lg={12} xl={12} align="center">
+              <h4>nobody voted yet</h4>
             </Grid>
-            <button onClick={this.handleSubmit}>send</button>
+            <StarRatingVote slug={slug} />
           </Grid>
         </Grid>
-      </Grid>
-    );
+      );
+    } else {
+      return (
+        <Grid item xs={12} sm={12} md={12} lg={12} xl={12} align="center">
+          <h4>nobody voted yet</h4>
+          <h4>
+            <NavLink to="/signin">login to vote</NavLink>
+          </h4>
+        </Grid>
+      );
+    }
   }
 }
 

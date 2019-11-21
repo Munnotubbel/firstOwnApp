@@ -754,3 +754,8 @@ a:visited {
   width: 100%;
   height: 20vh;
 }
+
+.profileAvatar img {
+  width: 10vh;
+  height: auto;
+}

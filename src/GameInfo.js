@@ -29,6 +29,7 @@ import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import PostComment from "./PostComment";
 import { createRatingEntry } from "./store/actions/ratingAction";
+import AddToFavorite from "./AddToFavorite";
 
 const theme = createMuiTheme({
   breakpoints: {
@@ -46,6 +47,7 @@ export class GameInfo extends Component {
   state = {
     slug: "",
     name: "",
+    id: "",
     gameinfo: [],
     twitch: [],
     youtube: [],
@@ -79,6 +81,7 @@ export class GameInfo extends Component {
           {
             slug: response.slug,
             name: response.name,
+            id: response.id,
             genres: response.genres,
             gameinfo: response,
             clip: response.clip,
@@ -159,18 +162,8 @@ export class GameInfo extends Component {
   }
 
   render() {
-    console.log(this.props);
-    if (
-      this.state.slug &&
-      typeof this.props.gameDB[this.state.slug] == "undefined"
-    ) {
-      this.props.createRatingEntry({ slug: this.state.slug });
-    }
+    this.state.gameinfo && console.log(this.state.gameinfo);
     const { auth } = this.props;
-
-    // if (this.state.comments) console.log(this.state.comments);
-    // if (this.state.slug) console.log(this.state.slug);
-
     const bildurl = this.state.gameinfo.background_image;
 
     return (
@@ -195,6 +188,14 @@ export class GameInfo extends Component {
             <Grid container spacing={3}>
               <Card>
                 <CardContent>
+                  <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                    <AddToFavorite
+                      slug={this.state.slug}
+                      gameid={this.state.id}
+                      gamename={this.state.name}
+                      pic={this.state.gameinfo.background_image}
+                    ></AddToFavorite>
+                  </Grid>
                   {this.state.released && (
                     <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                       <p>
@@ -301,9 +302,7 @@ export class GameInfo extends Component {
                 })}
               </AwesomeSlider>
             </Grid>
-          ) : (
-            ""
-          )}
+          ) : null}
 
           {this.state.slug && (
             <StarRating
@@ -311,6 +310,7 @@ export class GameInfo extends Component {
               slug={this.state.slug}
             ></StarRating>
           )}
+
           <Grid
             item
             align="center"
@@ -366,7 +366,7 @@ export class GameInfo extends Component {
             </ul>
           </Grid>
 
-          {this.state.youtube && (
+          {this.state.gameinfo.youtube_count !== 0 ? (
             <Grid
               item
               align="center"
@@ -376,7 +376,7 @@ export class GameInfo extends Component {
             >
               <MediaSlider movies={this.state.youtube}></MediaSlider>
             </Grid>
-          )}
+          ) : null}
 
           <Grid
             item
